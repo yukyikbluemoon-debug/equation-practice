@@ -1,0 +1,1439 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<title>ห้องฝึกสมการ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Prompt:wght@500;600&family=Sarabun:wght@400;500;600&family=STIX+Two+Text:ital,wght@0,400;0,600;1,400&display=swap">
+<style>
+:root{color-scheme:light}
+body{margin:0}
+/* Layout: โทรศัพท์แนวตั้งเป็นหลัก คอลัมน์เดียว พื้นกระดาษกราฟ
+   หน้าแรก > หน้าทำโจทย์ (แป้นตัวเลขในหน้า) > ใบคะแนนสำหรับแคปหน้าจอ */
+:root{
+  --paper:#F3F6FB; --grid:#DCE4F0; --card:#FFFFFF; --ink:#15223A; --muted:#566887; --line:#D0DAE8;
+  --accent:#0C7C86; --accent-soft:#D9EFF0; --on-accent:#FFFFFF;
+  --ok:#157A3C; --ok-soft:#DBF2E2; --bad:#B93027; --bad-soft:#FBE3E0;
+  --f-ui:'Prompt','Sarabun',system-ui,sans-serif;
+  --f-body:'Sarabun','Prompt',system-ui,sans-serif;
+  --f-math:'STIX Two Text','Times New Roman',Georgia,serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0C1322; --grid:#1A2640; --card:#131C30; --ink:#E6ECF8; --muted:#97A6C2; --line:#27365A;
+    --accent:#4FC3CB; --accent-soft:#12303A; --on-accent:#05141A;
+    --ok:#62D68C; --ok-soft:#133323; --bad:#FF8F85; --bad-soft:#3B1C1E; color-scheme:dark;
+  }
+  :root:not([data-theme="light"]) .app[data-level="high"]{--accent:#93A2FF;--accent-soft:#1D2548;--on-accent:#0A0F2B}
+}
+:root[data-theme="dark"]{
+  --paper:#0C1322; --grid:#1A2640; --card:#131C30; --ink:#E6ECF8; --muted:#97A6C2; --line:#27365A;
+  --accent:#4FC3CB; --accent-soft:#12303A; --on-accent:#05141A;
+  --ok:#62D68C; --ok-soft:#133323; --bad:#FF8F85; --bad-soft:#3B1C1E; color-scheme:dark;
+}
+:root[data-theme="dark"] .app[data-level="high"]{--accent:#93A2FF;--accent-soft:#1D2548;--on-accent:#0A0F2B}
+.app[data-level="high"]{--accent:#3347D0;--accent-soft:#E2E6FB;--on-accent:#FFFFFF}
+
+*{box-sizing:border-box}
+body{
+  background:var(--paper); color:var(--ink); font-family:var(--f-body); font-size:16px; line-height:1.55;
+  padding-inline:max(16px, env(safe-area-inset-left, 0px)) max(16px, env(safe-area-inset-right, 0px));
+  padding-block:20px 56px;
+}
+.app{max-width:560px;margin:0 auto;display:flex;flex-direction:column;gap:16px;position:relative}
+.screen{display:flex;flex-direction:column;gap:16px;min-width:0}
+button,input{font:inherit;color:inherit}
+button{cursor:pointer;touch-action:manipulation}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+h1,h2,p{margin:0}
+
+/* ปุ่ม */
+.btn{border:1.5px solid var(--line);background:var(--card);border-radius:10px;padding:11px 16px;font-family:var(--f-ui);font-weight:500;font-size:.95rem;min-height:46px}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.btn.big{width:100%;font-size:1.05rem;min-height:54px}
+.btn.quiet{border-color:transparent;background:transparent;color:var(--muted);padding-inline:8px}
+.btn[disabled]{opacity:.45;cursor:default}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+.row > .btn{flex:1 1 140px}
+
+/* หน้าแรก */
+.brand h1{font-family:var(--f-ui);font-weight:600;font-size:1.7rem;letter-spacing:.01em;text-wrap:balance}
+.brand p{color:var(--muted)}
+.panel{background:var(--card);border:1.5px solid var(--line);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:12px}
+.label{font-family:var(--f-ui);font-weight:500;font-size:.9rem;color:var(--muted)}
+.text{width:100%;border:1.5px solid var(--line);border-radius:10px;background:var(--paper);padding:11px 12px;font-size:1.1rem;min-width:0}
+.text:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.group{display:flex;flex-direction:column;gap:8px}
+.group h2{font-family:var(--f-ui);font-weight:500;font-size:.85rem;color:var(--muted)}
+.grades{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.gbtn{border:1.5px solid var(--line);background:var(--paper);border-radius:10px;padding:14px 4px;font-family:var(--f-ui);font-weight:600;font-size:1.25rem;min-height:58px}
+.gbtn[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft);color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+.blurb{color:var(--muted);font-size:.95rem;min-height:1.5em}
+.resume .eyebrow{font-family:var(--f-ui);font-weight:500;font-size:.85rem;color:var(--accent)}
+.resume .rtitle{font-family:var(--f-ui);font-weight:600;font-size:1.25rem}
+.small{font-size:.88rem;color:var(--muted)}
+.warn{background:var(--bad-soft);color:var(--bad);border-radius:10px;padding:10px 12px;font-size:.92rem}
+details{border:1.5px solid var(--line);border-radius:10px;background:var(--card);padding:0 14px}
+summary{padding:12px 0;cursor:pointer;font-family:var(--f-ui);font-weight:500;font-size:.95rem}
+details[open] summary{border-bottom:1px solid var(--line);margin-bottom:10px}
+details .inner{padding-bottom:14px;display:flex;flex-direction:column;gap:8px}
+.hist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;font-size:.95rem}
+.hist li{display:flex;justify-content:space-between;gap:12px;font-variant-numeric:tabular-nums}
+
+/* หน้าทำโจทย์ */
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.topbar .mid{font-family:var(--f-ui);font-weight:600;text-align:center;flex:1;min-width:0}
+.dots{display:flex;gap:8px;justify-content:center}
+.dot{flex:1;max-width:64px;height:40px;border-radius:8px;border:1.5px solid var(--line);background:var(--card);font-family:var(--f-ui);font-weight:500;font-variant-numeric:tabular-nums}
+.dot.ok{background:var(--ok-soft);border-color:var(--ok);color:var(--ok)}
+.dot.miss{background:var(--bad-soft);border-color:var(--bad);color:var(--bad)}
+.dot[aria-current="true"]{outline:3px solid var(--accent);outline-offset:1px}
+.card{background:var(--card);border:1.5px solid var(--line);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.meta{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.no{font-family:var(--f-ui);font-weight:600;font-size:1.05rem}
+.no small{color:var(--muted);font-weight:500;font-size:.85rem}
+.topic{background:var(--accent-soft);color:var(--accent);font-size:.85rem;font-weight:600;padding:3px 12px;border-radius:999px}
+.ask{font-size:1.05rem}
+.ask i{font-family:var(--f-math)}
+.board{
+  border:1.5px solid var(--line);border-radius:10px;padding:22px 10px;min-width:0;overflow-x:auto;
+  background-color:var(--paper);
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:24px 24px;background-position:-1px -1px;
+}
+.eq{font-family:var(--f-math);font-size:clamp(1.45rem,6.4vw,2.2rem);line-height:1.2;text-align:center;padding-block:.25em}
+
+/* สมการ */
+.m{font-family:var(--f-math)}
+.m i,.eq i{font-style:italic}
+sup,sub{font-size:.62em;line-height:0;position:relative;vertical-align:baseline}
+sup{top:-.62em;margin-left:.05em}
+sub{top:.35em;margin-left:.05em}
+.frac{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;margin:0 .12em;line-height:1.15}
+.frac .n{border-bottom:.07em solid currentColor;padding:0 .22em .06em}
+.frac .d{padding:.06em .22em 0}
+sup .frac,sub .frac{font-size:1.15em}
+.rad{display:inline-flex;align-items:stretch}
+.rad .sign{font-size:1.1em;line-height:1}
+.rad .rb{border-top:.07em solid currentColor;padding:0 .15em;margin-left:-.05em;margin-top:.08em}
+.bar{font-weight:300;padding:0 .08em}
+
+/* ช่องตอบและแป้นตัวเลข */
+.field{display:flex;align-items:center;gap:10px;border:1.5px solid var(--line);border-radius:10px;padding:0 12px;background:var(--card)}
+.field:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.field label{font-family:var(--f-math);font-size:1.3rem;white-space:nowrap}
+.field input{flex:1;min-width:0;border:0;background:transparent;font-size:1.35rem;font-family:var(--f-math);padding:12px 0;outline:none}
+.pad{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.key{height:54px;border-radius:10px;border:1.5px solid var(--line);background:var(--card);font-family:var(--f-math);font-size:1.45rem;padding:0;user-select:none}
+.key:active{background:var(--accent-soft)}
+.key.fn{background:var(--accent-soft);color:var(--accent);border-color:transparent}
+.note{color:var(--muted);font-size:.88rem}
+.linkbtn{border:0;background:none;color:var(--accent);text-decoration:underline;padding:0;font-size:.88rem}
+.fb{min-height:1.5em;font-weight:500}
+.fb.ok{color:var(--ok)} .fb.bad{color:var(--bad)} .fb.info{color:var(--muted)}
+.box{border-left:4px solid var(--accent);background:var(--accent-soft);padding:12px 16px;border-radius:0 10px 10px 0}
+.steps{margin:0;padding:0;list-style:none;counter-reset:s;display:flex;flex-direction:column;gap:14px}
+.steps li{counter-increment:s;position:relative;padding-left:40px;min-width:0}
+.steps li::before{
+  content:counter(s);position:absolute;left:0;top:0;width:28px;height:28px;border-radius:50%;
+  background:var(--accent);color:var(--on-accent);font-family:var(--f-ui);font-weight:500;font-size:.85rem;
+  display:grid;place-items:center;
+}
+.steps p{margin:0}
+.blk{display:block;font-size:1.25rem;padding:6px 0 0;overflow-x:auto}
+.final{font-family:var(--f-ui);font-weight:600;color:var(--ok);padding-top:4px}
+.final .m{font-size:1.2em}
+.savebar{display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap}
+
+/* ใบคะแนน */
+.sheet{background:var(--card);border:2px solid var(--ink);border-radius:14px;overflow:hidden}
+.sheet-head{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px 16px;background:var(--accent);color:var(--on-accent);font-family:var(--f-ui);font-weight:500;font-size:.95rem}
+.sheet-body{padding:18px 16px 16px;display:flex;flex-direction:column;gap:14px;
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:24px 24px;background-position:-1px -1px}
+.who{display:flex;align-items:flex-end;justify-content:space-between;gap:12px}
+.grade-badge{font-family:var(--f-ui);font-weight:600;font-size:3rem;line-height:1;color:var(--accent);white-space:nowrap}
+.name-input{border:0;border-bottom:2px dashed var(--line);background:transparent;font-family:var(--f-ui);font-weight:600;font-size:1.3rem;width:100%;min-width:0;padding:4px 0;color:var(--ink);text-align:right;border-radius:0}
+.name-input:focus{outline:none;border-bottom-color:var(--accent)}
+.score-row{display:flex;align-items:baseline;gap:10px;justify-content:center;background:var(--card);border:1.5px solid var(--line);border-radius:12px;padding:10px}
+.score-big{font-family:var(--f-math);font-weight:600;font-size:4.4rem;line-height:1;font-variant-numeric:tabular-nums}
+.score-big small{font-size:2rem;color:var(--muted);font-weight:400}
+.score-row span{font-family:var(--f-ui);color:var(--muted)}
+.marks{display:flex;gap:8px}
+.mark{flex:1;height:48px;border-radius:8px;display:flex;align-items:center;justify-content:center;gap:6px;font-family:var(--f-ui);font-weight:600;border:1.5px solid}
+.mark small{font-weight:500;font-size:.75rem;opacity:.8}
+.mark.ok{background:var(--ok-soft);color:var(--ok);border-color:var(--ok)}
+.mark.miss{background:var(--bad-soft);color:var(--bad);border-color:var(--bad)}
+.facts{display:grid;gap:4px;font-size:.98rem;background:var(--card);border:1.5px solid var(--line);border-radius:12px;padding:10px 12px}
+.facts div{display:flex;justify-content:space-between;gap:12px}
+.facts dt{color:var(--muted)}
+.facts dd{margin:0;text-align:right;font-variant-numeric:tabular-nums}
+.code{font-family:var(--f-math);letter-spacing:.04em}
+.review{display:flex;flex-direction:column;gap:12px}
+.rv{border:1.5px solid var(--line);border-radius:12px;background:var(--card);padding:12px 14px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.rv.miss{border-color:var(--bad)}
+.rv header{display:flex;justify-content:space-between;gap:8px;font-family:var(--f-ui);font-weight:600}
+.rv .tag.ok{color:var(--ok)} .rv .tag.miss{color:var(--bad)}
+.rv .eqs{font-family:var(--f-math);font-size:1.4rem;overflow-x:auto;padding-block:4px}
+.rv .ans{font-size:.98rem;display:grid;gap:2px}
+.rv .ans .m{font-size:1.1em}
+
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(24px + env(safe-area-inset-bottom, 0px));background:var(--ink);color:var(--paper);padding:10px 18px;border-radius:999px;font-family:var(--f-ui);font-size:.95rem;z-index:20;max-width:90vw}
+
+@media (max-width:420px){
+  .score-big{font-size:3.8rem}
+  .grade-badge{font-size:2.6rem}
+}
+@media (prefers-reduced-motion:no-preference){
+  .dot,.btn,.gbtn,.key{transition:background-color .15s,border-color .15s}
+}
+
+</style>
+</head>
+<body>
+<div class="app" id="app" data-level="low"><div class="screen" id="screen"></div><div class="toast" id="toast" role="status" hidden></div></div>
+<script>
+/* engine.js
+   แกนกลาง: เศษส่วนแบบเป๊ะ (ไม่ใช้ทศนิยม), ตัวสุ่มที่ทำซ้ำได้จากรหัสชุด,
+   ตัวช่วยเรียงสมการเป็น HTML, ตัวตรวจโจทย์ (validate) และตัวตรวจคำตอบของเด็ก (judge) */
+(function (G) {
+'use strict';
+
+/* ---------- เศษส่วน (rational) ---------- */
+const gcd = (a, b) => { a = Math.abs(a); b = Math.abs(b); while (b) { const t = a % b; a = b; b = t; } return a; };
+const lcm = (a, b) => Math.abs(a * b) / gcd(a, b);
+
+function R(n, d) {
+  if (d === undefined) d = 1;
+  if (d === 0) throw new Error('หารด้วยศูนย์');
+  if (!Number.isSafeInteger(n) || !Number.isSafeInteger(d)) throw new Error('ตัวเลขใหญ่เกินไป');
+  if (d < 0) { n = -n; d = -d; }
+  const g = gcd(n, d) || 1;
+  const rn = n / g;
+  return { n: rn === 0 ? 0 : rn, d: d / g };
+}
+const ri = n => R(n, 1);
+const add = (a, b) => R(a.n * b.d + b.n * a.d, a.d * b.d);
+const sub = (a, b) => R(a.n * b.d - b.n * a.d, a.d * b.d);
+const mul = (a, b) => R(a.n * b.n, a.d * b.d);
+const div = (a, b) => R(a.n * b.d, a.d * b.n);
+const eq = (a, b) => a.n === b.n && a.d === b.d;
+const isInt = a => a.d === 1;
+const lt = (a, b) => a.n * b.d < b.n * a.d;
+const neg = a => R(-a.n, a.d);
+function pow(a, k) {
+  let r = ri(1);
+  const m = Math.abs(k);
+  for (let i = 0; i < m; i++) r = mul(r, a);
+  return k < 0 ? div(ri(1), r) : r;
+}
+
+/* อ่านคำตอบที่เด็กพิมพ์: จำนวนเต็ม ทศนิยม หรือเศษส่วน a/b (รับเลขไทยและเครื่องหมายลบแบบ − ด้วย) */
+function parse(str) {
+  if (typeof str !== 'string') return null;
+  let s = str.trim()
+    .replace(/[๐-๙]/g, c => String(c.charCodeAt(0) - 0x0E50))
+    .replace(/[−–—]/g, '-')
+    .replace(/\s+/g, '');
+  try {
+    let m = s.match(/^([+-]?)(\d+)(?:\.(\d+))?$/);
+    if (m) {
+      const frac = m[3] || '';
+      if (frac.length > 9) return null;
+      return R((m[1] === '-' ? -1 : 1) * parseInt(m[2] + frac, 10), Math.pow(10, frac.length));
+    }
+    m = s.match(/^([+-]?)(\d+)\/(\d+)$/);
+    if (m) {
+      const d = parseInt(m[3], 10);
+      if (d === 0) return null;
+      return R((m[1] === '-' ? -1 : 1) * parseInt(m[2], 10), d);
+    }
+  } catch (e) { return null; }
+  return null;
+}
+
+/* ---------- ตัวสุ่มที่ทำซ้ำได้ ---------- */
+function xmur3(str) {
+  let h = 1779033703 ^ str.length;
+  for (let i = 0; i < str.length; i++) { h = Math.imul(h ^ str.charCodeAt(i), 3432918353); h = (h << 13) | (h >>> 19); }
+  return function () {
+    h = Math.imul(h ^ (h >>> 16), 2246822507);
+    h = Math.imul(h ^ (h >>> 13), 3266489909);
+    h ^= h >>> 16;
+    return h >>> 0;
+  };
+}
+function mulberry32(a) {
+  return function () {
+    a = (a + 0x6D2B79F5) | 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+function makeRng(seed) {
+  const f = mulberry32(xmur3(String(seed))());
+  return {
+    f,
+    int: (a, b) => a + Math.floor(f() * (b - a + 1)),
+    pick: arr => arr[Math.floor(f() * arr.length)],
+    nz: (a, b) => { let v = 0, g = 0; while (v === 0 && g++ < 1000) v = a + Math.floor(f() * (b - a + 1)); return v; },
+    chance: p => f() < p,
+    shuffle: arr => {
+      const a = arr.slice();
+      for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(f() * (i + 1)); const t = a[i]; a[i] = a[j]; a[j] = t; }
+      return a;
+    }
+  };
+}
+
+/* ---------- ตัวช่วยเรียงสมการเป็น HTML ---------- */
+const MINUS = '−';
+const I = s => `<i>${s}</i>`;
+const X = I('x');
+const frac = (n, d) => `<span class="frac"><span class="n">${n}</span><span class="d">${d}</span></span>`;
+const sup = e => `<sup>${e}</sup>`;
+const sub_ = e => `<sub>${e}</sub>`;
+const rad = e => `<span class="rad"><span class="sign">√</span><span class="rb">${e}</span></span>`;
+const M = h => `<span class="m blk">${h}</span>`;
+const absb = e => `<span class="bar">|</span>${e}<span class="bar">|</span>`;
+const nn = v => (v < 0 ? MINUS + (-v) : String(v));          // จำนวนเต็มพร้อมเครื่องหมายลบแบบ −
+const pn = v => (v < 0 ? `(${MINUS}${-v})` : String(v));     // ใส่วงเล็บถ้าติดลบ
+const plusN = k => (k < 0 ? ` ${MINUS} ${-k}` : ` + ${k}`);   // " + k" หรือ " − |k|"
+const minusN = k => (k < 0 ? ` + ${-k}` : ` ${MINUS} ${k}`);  // " − k" หรือ " + |k|"
+function fracN(n, d) {
+  if (d < 0) { n = -n; d = -d; }
+  return (n < 0 ? MINUS : '') + frac(Math.abs(n), d);
+}
+function rHtml(r) {
+  return r.d === 1 ? (r.n < 0 ? MINUS : '') + Math.abs(r.n)
+    : (r.n < 0 ? MINUS : '') + frac(Math.abs(r.n), r.d);
+}
+function rText(r) { return r.d === 1 ? String(r.n) : r.n + '/' + r.d; }
+
+/* terms = [[สัมประสิทธิ์, html ของตัวแปร หรือ null ถ้าเป็นค่าคงที่], ...] */
+function sum(terms) {
+  let out = '';
+  for (const [c, v] of terms) {
+    if (c === 0) continue;
+    const a = Math.abs(c);
+    const body = v ? (a === 1 ? v : a + v) : String(a);
+    if (out === '') out = (c < 0 ? MINUS : '') + body;
+    else out += (c < 0 ? ` ${MINUS} ` : ' + ') + body;
+  }
+  return out === '' ? '0' : out;
+}
+const lin = (a, b, v) => sum([[a, v || X], [b, null]]);
+const poly2 = (a, b, c) => sum([[a, X + sup(2)], [b, X], [c, null]]);
+
+/* m × (inner): ใส่วงเล็บให้เองเมื่อจำเป็น */
+function times(m, inner) {
+  const needParen = / [+−] /.test(inner) || /^[0-9−]/.test(inner);
+  const body = needParen ? `(${inner})` : inner;
+  if (m === 1) return inner;
+  if (m === -1) return MINUS + body;
+  return m + body;
+}
+const coef = n => (n === 1 ? '' : String(n));
+
+/* ---------- ตรวจโจทย์ที่สุ่มได้ ---------- */
+let CANDS = null;
+function cands() {
+  if (CANDS) return CANDS;
+  CANDS = [];
+  for (let d = 1; d <= 12; d++) {
+    for (let n = -60 * d; n <= 60 * d; n++) {
+      if (gcd(n, d) === 1) CANDS.push(R(n, d));
+    }
+  }
+  return CANDS;
+}
+
+/* โจทย์ต้องมี ans, verify (ตรวจจากสมการเดิมด้วยเศษส่วนจริง)
+   1) ทุกคำตอบใน ans ผ่าน verify
+   2) ลองแทนจำนวนตรรกยะทุกตัวในช่วง [-60, 60] (ตัวส่วนไม่เกิน 12) ต้องมีผ่านเท่ากับ ans พอดี ไม่เกินและไม่ขาด
+   q.search === false ใช้กับโจทย์ "จงหาค่า" ที่คำตอบเป็นค่าเดียวโดยนิยาม */
+function validate(q) {
+  try {
+    if (!q || !q.ans || !q.ans.length || typeof q.verify !== 'function') return false;
+    const blob = [q.eq, q.ask, q.hint].concat(...(q.steps || []));
+    if (blob.some(s => typeof s !== 'string' || /NaN|undefined|Infinity|\[object/.test(s))) return false;
+    for (let i = 0; i < q.ans.length; i++)
+      for (let j = i + 1; j < q.ans.length; j++) if (eq(q.ans[i], q.ans[j])) return false;
+    for (const a of q.ans) if (!q.verify(a)) return false;
+    if (q.search === false) return true;
+    const found = [];
+    for (const c of cands()) {
+      let ok = false;
+      try { ok = q.verify(c); } catch (e) { ok = false; }
+      if (ok) found.push(c);
+    }
+    if (found.length !== q.ans.length) return false;
+    return q.ans.every(a => found.some(f => eq(f, a)));
+  } catch (e) { return false; }
+}
+
+/* ตรวจคำตอบที่เด็กพิมพ์ */
+function judge(q, raw) {
+  const s = (raw || '').replace(/^\s*[a-zA-Z]\s*=\s*/, '');
+  const parts = s.split(/[,;，]/).map(t => t.trim()).filter(t => t !== '');
+  if (!parts.length) return { state: 'empty' };
+  const vals = parts.map(parse);
+  if (vals.some(v => v === null)) return { state: 'invalid' };
+  const uniq = [];
+  for (const v of vals) if (!uniq.some(u => eq(u, v))) uniq.push(v);
+  if (uniq.length !== q.ans.length) return { state: 'count', n: q.ans.length };
+  return { state: q.ans.every(a => uniq.some(u => eq(u, a))) ? 'ok' : 'wrong' };
+}
+
+/* เปลี่ยนเครื่องหมายลบแบบขีดสั้น (-) หน้าตัวเลข ให้เป็นเครื่องหมายลบจริง (−) ในข้อความ HTML */
+const fixMinus = s => (typeof s === 'string' ? s.replace(/(^|[\s(>=])-(?=\d)/g, '$1' + MINUS) : s);
+function polish(q) {
+  q.eq = fixMinus(q.eq); q.ask = fixMinus(q.ask); q.hint = fixMinus(q.hint);
+  q.steps = q.steps.map(s => [fixMinus(s[0]), fixMinus(s[1])]);
+  return q;
+}
+
+const ansHtml = q => q.ans.map(rHtml).join(' หรือ ');
+const ansText = q => q.ans.map(rText).join(', ');
+
+G.EQ = {
+  R, ri, add, sub, mul, div, eq, isInt, lt, neg, pow, gcd, lcm, parse, makeRng,
+  validate, judge, ansHtml, ansText, rText, polish,
+  h: { MINUS, I, X, frac, fracN, sup, sub: sub_, rad, M, absb, nn, pn, plusN, minusN, rHtml, sum, lin, poly2, times, coef },
+  gen: {}
+};
+})(globalThis);
+
+/* gens-a.js
+   แม่แบบโจทย์ชุด A: สมการเชิงเส้น สมการเศษส่วน เลขยกกำลัง
+   หลักการ: เลือกคำตอบก่อน แล้วสร้างโจทย์จากคำตอบ จากนั้น engine.validate ตรวจซ้ำจากสมการเดิม */
+(function (G) {
+'use strict';
+const E = G.EQ;
+const { R, ri, add, sub: rsub, mul, div, eq, pow, isInt, gcd, lcm } = E;
+const { MINUS, I, X, frac, fracN, sup, M, nn, plusN, minusN, rHtml, sum, lin, times, coef } = E.h;
+const g = E.gen;
+
+const sg = v => (v < 0 ? MINUS + (-v) : String(v));
+const d1 = n10 => (n10 < 0 ? MINUS : '') + (Math.abs(n10) / 10).toFixed(1);
+
+/* ax + b = c */
+g.linAB = function (rng, o) {
+  o = Object.assign({ a: [2, 9], x: [-9, 9], b: 20, neg: false }, o || {});
+  let a = rng.int(o.a[0], o.a[1]);
+  if (o.neg && rng.chance(0.4)) a = -a;
+  const xv = rng.nz(o.x[0], o.x[1]);
+  const b = rng.nz(-o.b, o.b);
+  const c = a * xv + b, k = c - b;
+  return {
+    topic: 'สมการเชิงเส้น', ask: `จงหาค่า ${X}`, pre: `${X} =`,
+    eq: `${lin(a, b)} = ${c}`,
+    ans: [R(xv)],
+    hint: `ย้ายตัวเลขที่ไม่มี ${X} ไปไว้อีกข้างหนึ่ง แล้วหารด้วยสัมประสิทธิ์ของ ${X}`,
+    steps: [
+      [`${b < 0 ? 'บวก' : 'ลบ'} ${Math.abs(b)} ทั้งสองข้าง`, M(`${sum([[a, X]])} = ${c}${minusN(b)} = ${k}`)],
+      [`หารทั้งสองข้างด้วย ${sg(a)}`, M(`${X} = ${fracN(k, a)} = ${xv}`)]
+    ],
+    verify: x => eq(add(mul(ri(a), x), ri(b)), ri(c))
+  };
+};
+
+/* สมการที่มีทศนิยม */
+g.decLin = function (rng) {
+  const a10 = rng.int(3, 29);
+  if (a10 % 10 === 0) return null;
+  const xv = rng.nz(-8, 10), b10 = rng.nz(-40, 40);
+  if (b10 % 10 === 0) return null;
+  const c10 = a10 * xv + b10;
+  const k = c10 - b10;
+  return {
+    topic: 'สมการที่มีทศนิยม', ask: `จงหาค่า ${X}`, pre: `${X} =`,
+    eq: `${d1(a10)}${X} ${b10 < 0 ? MINUS : '+'} ${d1(Math.abs(b10))} = ${d1(c10)}`,
+    ans: [R(xv)],
+    hint: 'คูณทั้งสองข้างด้วย 10 เพื่อให้ไม่เหลือทศนิยม',
+    steps: [
+      ['คูณทั้งสองข้างด้วย 10 เพื่อกำจัดทศนิยม', M(`${sum([[a10, X], [b10, null]])} = ${c10}`)],
+      [`${b10 < 0 ? 'บวก' : 'ลบ'} ${Math.abs(b10)} ทั้งสองข้าง`, M(`${a10}${X} = ${c10}${minusN(b10)} = ${k}`)],
+      [`หารทั้งสองข้างด้วย ${a10}`, M(`${X} = ${fracN(k, a10)} = ${xv}`)]
+    ],
+    verify: x => eq(add(mul(R(a10, 10), x), R(b10, 10)), R(c10, 10))
+  };
+};
+
+/* ax + b = cx + d */
+g.linBoth = function (rng, o) {
+  o = Object.assign({ a: [3, 9], x: [-8, 8], neg: false }, o || {});
+  const a = rng.int(o.a[0], o.a[1]);
+  let c = rng.int(1, Math.max(1, a - 1));
+  if (o.neg && rng.chance(0.5)) c = -rng.int(1, 5);
+  const A = a - c;
+  if (Math.abs(A) < 2) return null;
+  const xv = rng.nz(o.x[0], o.x[1]);
+  const b = rng.nz(-12, 12);
+  const d = a * xv + b - c * xv;
+  if (d === 0) return null;
+  const K = d - b;
+  return {
+    topic: 'สมการที่มี x ทั้งสองข้าง', ask: `จงหาค่า ${X}`, pre: `${X} =`,
+    eq: `${lin(a, b)} = ${lin(c, d)}`,
+    ans: [R(xv)],
+    hint: `ย้ายพจน์ที่มี ${X} ไปไว้ข้างเดียวกัน แล้วย้ายตัวเลขไปไว้อีกข้าง`,
+    steps: [
+      [`ย้ายพจน์ที่มี ${X} ไปไว้ข้างซ้าย และตัวเลขไปไว้ข้างขวา`, M(`${sum([[a, X], [-c, X]])} = ${sum([[d, null], [-b, null]])}`)],
+      ['รวมพจน์ที่คล้ายกัน', M(`${sum([[A, X]])} = ${K}`)],
+      [`หารทั้งสองข้างด้วย ${sg(A)}`, M(`${X} = ${fracN(K, A)} = ${xv}`)]
+    ],
+    verify: x => eq(add(mul(ri(a), x), ri(b)), add(mul(ri(c), x), ri(d)))
+  };
+};
+
+/* a(x + b) − c(x + d) = e */
+g.linParen = function (rng) {
+  const a = rng.int(2, 6), c = rng.int(1, 5);
+  const A = a - c;
+  if (Math.abs(A) < 2) return null;
+  const b = rng.nz(-6, 6), d = rng.nz(-6, 6), xv = rng.nz(-7, 9);
+  const e = a * (xv + b) - c * (xv + d);
+  const k = a * b - c * d, K = e - k;
+  return {
+    topic: 'สมการที่มีวงเล็บ', ask: `จงหาค่า ${X}`, pre: `${X} =`,
+    eq: `${times(a, lin(1, b))} ${MINUS} ${times(c, lin(1, d))} = ${e}`,
+    ans: [R(xv)],
+    hint: 'กระจายวงเล็บก่อน แล้วรวมพจน์ที่คล้ายกัน',
+    steps: [
+      ['กระจายวงเล็บ', M(`${sum([[a, X], [a * b, null], [-c, X], [-c * d, null]])} = ${e}`)],
+      ['รวมพจน์ที่คล้ายกัน', M(`${sum([[A, X], [k, null]])} = ${e}`)],
+      ['ย้ายตัวเลขไปอีกข้าง', M(`${sum([[A, X]])} = ${e}${minusN(k)} = ${K}`)],
+      [`หารทั้งสองข้างด้วย ${sg(A)}`, M(`${X} = ${fracN(K, A)} = ${xv}`)]
+    ],
+    verify: x => eq(rsub(mul(ri(a), add(x, ri(b))), mul(ri(c), add(x, ri(d)))), ri(e))
+  };
+};
+
+/* สมการเศษส่วน: (a1 x + b1)/d1 ± (a2 x + b2)/d2 = ค่าคงที่ */
+g.linFrac = function (rng, o) {
+  o = Object.assign({ den: [2, 3, 4, 5, 6], both: false, sub: false }, o || {});
+  const dd1 = rng.pick(o.den), dd2 = rng.pick(o.den);
+  if (dd1 === dd2) return null;
+  const xv = rng.nz(-6, 9);
+  let a1, b1, a2, b2;
+  if (o.both) { a1 = rng.int(1, 3); b1 = rng.nz(-5, 5); a2 = rng.int(1, 3); b2 = rng.nz(-5, 5); }
+  else { a1 = rng.int(1, 3); b1 = 0; a2 = 0; b2 = rng.int(1, 9); }
+  const s2 = (o.sub && rng.chance(0.5)) ? -1 : 1;
+  if (gcd(gcd(a1, b1), dd1) !== 1 || gcd(gcd(a2, b2), dd2) !== 1) return null;
+  const rhs = add(div(ri(a1 * xv + b1), ri(dd1)), mul(ri(s2), div(ri(a2 * xv + b2), ri(dd2))));
+  const L = lcm(lcm(dd1, dd2), rhs.d);
+  const m1 = L / dd1, m2 = L / dd2;
+  const A = a1 * m1 + s2 * a2 * m2, Bc = b1 * m1 + s2 * b2 * m2, K = rhs.n * (L / rhs.d);
+  if (Math.abs(A) < 2 || L > 60 || Math.abs(K) > 200) return null;
+  const num1 = sum([[a1, X], [b1, null]]), num2 = sum([[a2, X], [b2, null]]);
+  const op = s2 < 0 ? MINUS : '+';
+  const part = (m, a, b) => (a !== 0 && b !== 0) ? `${m}(${sum([[a, X], [b, null]])})`
+    : (a !== 0 ? sum([[m * a, X]]) : String(m * b));
+  const lhsHtml = `${frac(num1, dd1)} ${op} ${frac(num2, dd2)}`;
+  const s2math = `${part(m1, a1, b1)} ${op} ${part(m2, a2, b2)} = ${K}`;
+  const s3math = `${sum([[A, X], [Bc, null]])} = ${K}`;
+  const steps = [
+    [`คูณทั้งสองข้างด้วย ค.ร.น. ของตัวส่วน คือ ${L}`, M(`${L}(${lhsHtml}) = ${L} × ${rHtml(rhs)}`)],
+    ['คูณเข้าไปเพื่อตัดตัวส่วน', M(s2math)]
+  ];
+  if (s2math !== s3math) steps.push(['กระจายวงเล็บและรวมพจน์ที่คล้ายกัน', M(s3math)]);
+  if (Bc !== 0) steps.push(['ย้ายตัวเลขไปอีกข้าง', M(`${sum([[A, X]])} = ${K}${minusN(Bc)} = ${K - Bc}`)]);
+  steps.push([`หารทั้งสองข้างด้วย ${sg(A)}`, M(`${X} = ${fracN(K - Bc, A)} = ${xv}`)]);
+  return {
+    topic: 'สมการเศษส่วน', ask: `จงหาค่า ${X}`, pre: `${X} =`,
+    eq: `${lhsHtml} = ${rHtml(rhs)}`,
+    ans: [R(xv)],
+    hint: 'คูณทั้งสองข้างด้วย ค.ร.น. ของตัวส่วนทุกตัว เพื่อกำจัดเศษส่วนก่อน',
+    steps,
+    verify: x => eq(add(div(add(mul(ri(a1), x), ri(b1)), ri(dd1)),
+      mul(ri(s2), div(add(mul(ri(a2), x), ri(b2)), ri(dd2)))), rhs)
+  };
+};
+
+/* (x + a)/p = (bx + c)/q */
+g.linFracCross = function (rng) {
+  const p = rng.int(2, 7), q = rng.int(2, 7);
+  if (p === q) return null;
+  const b = rng.int(1, 4), xv = rng.nz(-6, 9), t = rng.nz(-4, 6);
+  const a = t * p - xv, c = t * q - b * xv;
+  const A = q - p * b, K = p * c - q * a;
+  if (Math.abs(A) < 2 || Math.abs(a) > 25 || Math.abs(c) > 30 || a === 0 || c === 0) return null;
+  return {
+    topic: 'สมการเศษส่วน', ask: `จงหาค่า ${X}`, pre: `${X} =`,
+    eq: `${frac(lin(1, a), p)} = ${frac(lin(b, c), q)}`,
+    ans: [R(xv)],
+    hint: 'มีเศษส่วนข้างละตัว คูณไขว้ได้เลย',
+    steps: [
+      ['คูณไขว้', M(`${times(q, lin(1, a))} = ${times(p, lin(b, c))}`)],
+      ['กระจายวงเล็บ', M(`${sum([[q, X], [q * a, null]])} = ${sum([[p * b, X], [p * c, null]])}`)],
+      [`ย้ายพจน์ที่มี ${X} ไปไว้ข้างซ้าย ตัวเลขไว้ข้างขวา`, M(`${sum([[q, X], [-p * b, X]])} = ${sum([[p * c, null], [-q * a, null]])}`)],
+      ['รวมพจน์ที่คล้ายกัน', M(`${sum([[A, X]])} = ${K}`)],
+      [`หารทั้งสองข้างด้วย ${sg(A)}`, M(`${X} = ${fracN(K, A)} = ${xv}`)]
+    ],
+    verify: x => eq(div(add(x, ri(a)), ri(p)), div(add(mul(ri(b), x), ri(c)), ri(q)))
+  };
+};
+
+/* เลขยกกำลัง: คูณ/หาร ฐานเดียวกัน, ยกกำลังซ้อน */
+g.powSimp = function (rng, o) {
+  o = Object.assign({ neg: false, base: [2, 3, 4, 5], forms: ['mul'] }, o || {});
+  const a = rng.pick(o.base), ra = ri(a);
+  const form = rng.pick(o.forms);
+  let top, total, m, n2, topHtml, step1;
+  if (form === 'mul') {
+    m = rng.int(2, 5); n2 = rng.int(2, 4); total = m + n2;
+    topHtml = `${a}${sup(m)} × ${a}${sup(n2)}`;
+    step1 = ['คูณที่ฐานเท่ากัน ให้บวกเลขชี้กำลัง', M(`${a}${sup(m)} × ${a}${sup(n2)} = ${a}${sup(`${m} + ${n2}`)} = ${a}${sup(total)}`)];
+    top = mul(pow(ra, m), pow(ra, n2));
+  } else {
+    m = rng.int(2, 3); n2 = rng.int(2, 3); total = m * n2;
+    topHtml = `(${a}${sup(m)})${sup(n2)}`;
+    step1 = ['ยกกำลังซ้อน ให้คูณเลขชี้กำลัง', M(`(${a}${sup(m)})${sup(n2)} = ${a}${sup(`${m} × ${n2}`)} = ${a}${sup(total)}`)];
+    top = pow(pow(ra, m), n2);
+  }
+  const k = o.neg ? rng.int(total + 1, total + 3) : rng.int(1, total - 1);
+  const e = total - k;
+  if (e === 0) return null;
+  const ans = pow(ra, e);
+  const steps = [
+    step1,
+    ['หารที่ฐานเท่ากัน ให้ลบเลขชี้กำลัง', M(`${frac(`${a}${sup(total)}`, `${a}${sup(k)}`)} = ${a}${sup(`${total} ${MINUS} ${k}`)} = ${a}${sup(nn(e))}`)]
+  ];
+  if (e < 0) steps.push(['เลขชี้กำลังติดลบ ให้กลับเป็นส่วน', M(`${a}${sup(nn(e))} = ${frac(1, `${a}${sup(-e)}`)} = ${rHtml(ans)}`)]);
+  else steps.push(['คำนวณค่า', M(`${a}${sup(e)} = ${a ** e}`)]);
+  return {
+    topic: 'เลขยกกำลัง', search: false,
+    ask: `จงหาค่าของนิพจน์ต่อไปนี้${e < 0 ? ' ตอบเป็นเศษส่วน' : ''}`, pre: 'ค่า =',
+    eq: `${frac(topHtml, `${a}${sup(k)}`)} = ?`,
+    ans: [ans],
+    hint: 'ฐานเท่ากัน คูณให้บวกเลขชี้กำลัง หารให้ลบเลขชี้กำลัง',
+    steps,
+    verify: x => eq(x, div(top, pow(ra, k)))
+  };
+};
+
+/* a^(−m) ± a^(−n) */
+g.powNeg = function (rng) {
+  const a = rng.pick([2, 3, 5]);
+  const m = rng.int(1, 3), n2 = rng.int(1, 3);
+  if (m === n2) return null;
+  const minus = rng.chance(0.4);
+  const A = a ** m, B = a ** n2, L = lcm(A, B);
+  const ans = minus ? rsub(R(1, A), R(1, B)) : add(R(1, A), R(1, B));
+  const op = minus ? MINUS : '+';
+  const numer = minus ? L / A - L / B : L / A + L / B;
+  const unreduced = `${frac(numer < 0 ? MINUS + (-numer) : numer, L)}`;
+  const last = (ans.n === numer && ans.d === L) ? '' : ` = ${rHtml(ans)}`;
+  return {
+    topic: 'เลขชี้กำลังติดลบ', search: false, ask: 'จงหาค่าของนิพจน์ต่อไปนี้ ตอบเป็นเศษส่วน', pre: 'ค่า =',
+    eq: `${a}${sup(MINUS + m)} ${op} ${a}${sup(MINUS + n2)} = ?`,
+    ans: [ans],
+    hint: `a${sup('−n')} เท่ากับ 1 หารด้วย a${sup('n')}`,
+    steps: [
+      ['เลขชี้กำลังติดลบ ให้กลับเป็นส่วน', M(`${a}${sup(MINUS + m)} = ${frac(1, `${a}${sup(m)}`)} = ${frac(1, A)} &nbsp;&nbsp; ${a}${sup(MINUS + n2)} = ${frac(1, `${a}${sup(n2)}`)} = ${frac(1, B)}`)],
+      [minus ? 'ทำตัวส่วนให้เท่ากันแล้วลบกัน' : 'ทำตัวส่วนให้เท่ากันแล้วบวกกัน',
+        M(`${frac(1, A)} ${op} ${frac(1, B)} = ${frac(L / A, L)} ${op} ${frac(L / B, L)} = ${unreduced}${last}`)]
+    ],
+    verify: x => eq(x, minus ? rsub(R(1, a ** m), R(1, a ** n2)) : add(R(1, a ** m), R(1, a ** n2)))
+  };
+};
+
+/* a^x = V หรือ a^(bx + c) = V */
+g.powEq = function (rng, o) {
+  o = Object.assign({ lin: false, negV: false }, o || {});
+  const maxK = { 2: 7, 3: 5, 5: 4, 10: 4 };
+  const a = rng.pick([2, 3, 5, 10]), ra = ri(a);
+  if (!o.lin) {
+    const k = rng.int(2, maxK[a]);
+    const V = a ** k;
+    const stepsPow = k <= 4 ? Array(k).fill(a).join(' × ') + ' = ' : '';
+    return {
+      topic: 'สมการเลขยกกำลัง', ask: `จงหาค่า ${X}`, pre: `${X} =`,
+      eq: `${a}${sup(X)} = ${V}`,
+      ans: [ri(k)],
+      hint: `เขียน ${V} ให้อยู่ในรูป ${a} ยกกำลังบางอย่าง`,
+      steps: [
+        [`เขียน ${V} ให้อยู่ในรูปกำลังของ ${a}`, M(`${V} = ${stepsPow}${a}${sup(k)}`)],
+        ['ฐานเท่ากันแล้ว เลขชี้กำลังต้องเท่ากัน', M(`${a}${sup(X)} = ${a}${sup(k)} ⟹ ${X} = ${k}`)]
+      ],
+      verify: x => isInt(x) && Math.abs(x.n) <= 30 && eq(pow(ra, x.n), ri(V))
+    };
+  }
+  const b = rng.pick([2, 3]), c = rng.nz(-3, 3), xv = rng.int(o.negV ? -2 : 0, 4);
+  const k = b * xv + c;
+  if (o.negV ? (k === 0 || Math.abs(k) > maxK[a]) : (k < 2 || k > maxK[a])) return null;
+  const Vr = k > 0 ? ri(a ** k) : R(1, a ** (-k));
+  const Vh = k > 0 ? String(a ** k) : frac(1, a ** (-k));
+  const K2 = k - c;
+  return {
+    topic: 'สมการเลขยกกำลัง', ask: `จงหาค่า ${X}`, pre: `${X} =`,
+    eq: `${a}${sup(lin(b, c))} = ${Vh}`,
+    ans: [ri(xv)],
+    hint: `เขียนค่าทางขวาให้เป็น ${a} ยกกำลังบางอย่าง แล้วเทียบเลขชี้กำลัง`,
+    steps: [
+      [`เขียนค่าทางขวาให้อยู่ในรูปกำลังของ ${a}`, M(`${Vh} = ${a}${sup(nn(k))}`)],
+      ['ฐานเท่ากันแล้ว เลขชี้กำลังต้องเท่ากัน', M(`${lin(b, c)} = ${nn(k)}`)],
+      [`ย้ายตัวเลขไปอีกข้าง`, M(`${sum([[b, X]])} = ${nn(k)}${minusN(c)} = ${nn(K2)}`)],
+      [`หารทั้งสองข้างด้วย ${b}`, M(`${X} = ${fracN(K2, b)} = ${nn(xv)}`)]
+    ],
+    verify: x => isInt(x) && Math.abs(x.n) <= 30 && eq(pow(ra, b * x.n + c), Vr)
+  };
+};
+})(globalThis);
+
+/* gens-b.js
+   แม่แบบโจทย์ชุด B: สมการกำลังสอง สมการที่ x อยู่ในตัวส่วน ค่าสัมบูรณ์
+   เลขชี้กำลังเศษส่วน เอกซ์โพเนนเชียล ลอการิทึม สมการติดราก */
+(function (G) {
+'use strict';
+const E = G.EQ;
+const { R, ri, add, sub: rsub, mul, div, eq, pow, isInt, lt, gcd } = E;
+const { MINUS, I, X, frac, fracN, sup, sub, rad, M, absb, nn, pn, plusN, minusN, rHtml, sum, lin, poly2, coef } = E.h;
+const g = E.gen;
+const sg = v => (v < 0 ? MINUS + (-v) : String(v));
+
+/* ขั้นตอนแก้สมการกำลังสองด้วยสูตร (ใช้เมื่อ D เป็นกำลังสองสมบูรณ์) */
+function quadSteps(A, B, C) {
+  const D = B * B - 4 * A * C;
+  if (D <= 0) return null;
+  const sq = Math.round(Math.sqrt(D));
+  if (sq * sq !== D) return null;
+  const r1 = R(-B + sq, 2 * A), r2 = R(-B - sq, 2 * A);
+  const steps = [
+    ['หาค่า D = b² − 4ac', M(`D = ${pn(B)}${sup(2)} ${MINUS} 4(${nn(A)})(${nn(C)}) = ${D}`)],
+    ['ใช้สูตร x = (−b ± √D) / 2a', M(`${X} = ${frac(`${MINUS}${pn(B)} ± ${rad(D)}`, `2(${nn(A)})`)} = ${frac(`${nn(-B)} ± ${sq}`, 2 * A)}`)],
+    ['คำนวณทั้งสองค่า', M(`${X} = ${frac(`${nn(-B)} + ${sq}`, 2 * A)} = ${rHtml(r1)} &nbsp;&nbsp; ${X} = ${frac(`${nn(-B)} ${MINUS} ${sq}`, 2 * A)} = ${rHtml(r2)}`)]
+  ];
+  return { steps, roots: [r1, r2], D, sq };
+}
+E.quadSteps = quadSteps;
+
+/* x² + bx + c = 0 (แยกตัวประกอบ), x² = m², x² − bx = 0 */
+g.quadFactor = function (rng, o) {
+  o = Object.assign({ forms: ['gen'], max: 9 }, o || {});
+  const form = rng.pick(o.forms);
+  if (form === 'sq') {
+    const m = rng.int(2, 12);
+    return {
+      topic: 'สมการกำลังสอง', ask: `จงหาค่า ${X} ทั้งหมด`, pre: `${X} =`,
+      eq: `${X}${sup(2)} = ${m * m}`,
+      ans: [ri(m), ri(-m)],
+      hint: `จำนวนที่ยกกำลังสองแล้วได้ ${m * m} มีสองจำนวน คือบวกและลบ`,
+      steps: [
+        ['ถอดรากที่สองทั้งสองข้าง (ได้ทั้งค่าบวกและค่าลบ)', M(`${X} = ± ${rad(m * m)} = ± ${m}`)],
+        ['ดังนั้น', M(`${X} = ${m} หรือ ${X} = ${MINUS}${m}`)]
+      ],
+      verify: x => eq(mul(x, x), ri(m * m))
+    };
+  }
+  if (form === 'zero') {
+    const b = rng.nz(-9, 9);
+    if (Math.abs(b) < 2) return null;
+    return {
+      topic: 'สมการกำลังสอง', ask: `จงหาค่า ${X} ทั้งหมด`, pre: `${X} =`,
+      eq: `${poly2(1, -b, 0)} = 0`,
+      ans: [ri(0), ri(b)],
+      hint: `ดึงตัวร่วม ${X} ออกมาก่อน`,
+      steps: [
+        [`ดึงตัวร่วม ${X} ออกมา`, M(`${X}(${lin(1, -b)}) = 0`)],
+        ['ผลคูณเท่ากับศูนย์ แสดงว่ามีตัวใดตัวหนึ่งเป็นศูนย์', M(`${X} = 0 หรือ ${lin(1, -b)} = 0`)],
+        ['ดังนั้น', M(`${X} = 0 หรือ ${X} = ${nn(b)}`)]
+      ],
+      verify: x => eq(rsub(mul(x, x), mul(ri(b), x)), ri(0))
+    };
+  }
+  const r1 = rng.nz(-o.max, o.max), r2 = rng.nz(-o.max, o.max);
+  if (r1 === r2) return null;
+  const s = r1 + r2, p = r1 * r2;
+  return {
+    topic: 'สมการกำลังสอง', ask: `จงหาค่า ${X} ทั้งหมด`, pre: `${X} =`,
+    eq: `${poly2(1, -s, p)} = 0`,
+    ans: [ri(r1), ri(r2)],
+    hint: `หาจำนวนสองจำนวนที่คูณกันได้ ${nn(p)} และบวกกันได้ ${nn(-s)}`,
+    steps: [
+      ['แยกตัวประกอบ', M(`(${lin(1, -r1)})(${lin(1, -r2)}) = 0`)],
+      ['ผลคูณเท่ากับศูนย์ แสดงว่ามีตัวใดตัวหนึ่งเป็นศูนย์', M(`${lin(1, -r1)} = 0 หรือ ${lin(1, -r2)} = 0`)],
+      ['ดังนั้น', M(`${X} = ${nn(r1)} หรือ ${X} = ${nn(r2)}`)]
+    ],
+    verify: x => eq(add(rsub(mul(x, x), mul(ri(s), x)), ri(p)), ri(0))
+  };
+};
+
+/* (px + q)(rx + s) = 0 ที่ได้ ax² + bx + c = 0 */
+g.quadRational = function (rng, o) {
+  o = Object.assign({ mode: 'factor' }, o || {});
+  const p = rng.int(1, 3), r = rng.int(1, 3);
+  if (p * r < 2) return null;
+  const q = rng.nz(-6, 6), s = rng.nz(-6, 6);
+  if (gcd(p, Math.abs(q)) !== 1 || gcd(r, Math.abs(s)) !== 1) return null;
+  const t1 = R(-q, p), t2 = R(-s, r);
+  if (eq(t1, t2)) return null;
+  const A = p * r, B = p * s + q * r, C = q * s;
+  if (Math.abs(B) > 40 || Math.abs(C) > 40) return null;
+  let steps, hint;
+  if (o.mode === 'formula') {
+    const qs = quadSteps(A, B, C);
+    if (!qs) return null;
+    steps = qs.steps;
+    hint = 'ใช้สูตร x = (−b ± √(b² − 4ac)) / 2a';
+  } else {
+    steps = [
+      ['แยกตัวประกอบ', M(`(${lin(p, q)})(${lin(r, s)}) = 0`)],
+      ['ผลคูณเท่ากับศูนย์ แสดงว่ามีตัวใดตัวหนึ่งเป็นศูนย์', M(`${lin(p, q)} = 0 หรือ ${lin(r, s)} = 0`)],
+      ['แก้สมการทั้งสองส่วน', M(`${X} = ${rHtml(t1)} หรือ ${X} = ${rHtml(t2)}`)]
+    ];
+    hint = `ลองแยกเป็น (ax + b)(cx + d) โดย a × c = ${A} และ b × d = ${nn(C)}`;
+  }
+  return {
+    topic: 'สมการกำลังสอง', ask: `จงหาค่า ${X} ทั้งหมด`, pre: `${X} =`,
+    eq: `${poly2(A, B, C)} = 0`,
+    ans: [t1, t2], hint, steps,
+    verify: x => eq(add(add(mul(ri(A), mul(x, x)), mul(ri(B), x)), ri(C)), ri(0))
+  };
+};
+
+/* x + a/x = b */
+g.ratEq = function (rng, o) {
+  o = Object.assign({ max: 9 }, o || {});
+  const r1 = rng.nz(-o.max, o.max), r2 = rng.nz(-o.max, o.max);
+  if (r1 === r2 || r1 + r2 === 0) return null;
+  const b = r1 + r2, a = r1 * r2;
+  if (Math.abs(a) > 40) return null;
+  const op = a < 0 ? MINUS : '+';
+  return {
+    topic: 'สมการที่ x อยู่ในตัวส่วน', ask: `จงหาค่า ${X} ทั้งหมด`, pre: `${X} =`,
+    eq: `${X} ${op} ${frac(Math.abs(a), X)} = ${nn(b)}`,
+    ans: [ri(r1), ri(r2)],
+    hint: `คูณทั้งสองข้างด้วย ${X} เพื่อกำจัดเศษส่วน แล้วจัดเป็นสมการกำลังสอง`,
+    steps: [
+      [`คูณทั้งสองข้างด้วย ${X} (โดย ${X} ≠ 0)`, M(`${X}${sup(2)} ${op} ${Math.abs(a)} = ${sum([[b, X]])}`)],
+      ['ย้ายพจน์ทั้งหมดไปข้างเดียวกัน', M(`${poly2(1, -b, a)} = 0`)],
+      ['แยกตัวประกอบ', M(`(${lin(1, -r1)})(${lin(1, -r2)}) = 0`)],
+      ['ทั้งสองค่าไม่เป็นศูนย์ จึงใช้ได้ทั้งคู่', M(`${X} = ${nn(r1)} หรือ ${X} = ${nn(r2)}`)]
+    ],
+    verify: x => x.n !== 0 && eq(add(x, div(ri(a), x)), ri(b))
+  };
+};
+
+/* 1/x + 1/(x+k) = m/n */
+g.ratEq2 = function (rng) {
+  const k = rng.int(1, 4), m = rng.int(1, 4), n = rng.int(1, 6);
+  const A = m, B = m * k - 2 * n, C = -n * k;
+  const qs = quadSteps(A, B, C);
+  if (!qs) return null;
+  if (qs.roots.some(r => r.n === 0 || eq(r, ri(-k)) || r.d > 6 || Math.abs(r.n) > 30)) return null;
+  const rhs = R(m, n);
+  return {
+    topic: 'สมการที่ x อยู่ในตัวส่วน', ask: `จงหาค่า ${X} ทั้งหมด`, pre: `${X} =`,
+    eq: `${frac(1, X)} + ${frac(1, lin(1, k))} = ${rHtml(rhs)}`,
+    ans: qs.roots,
+    hint: `คูณทั้งสองข้างด้วยตัวส่วนร่วม แล้วจัดเป็นสมการกำลังสอง อย่าลืมว่า ${X} ≠ 0 และ ${X} ≠ ${MINUS}${k}`,
+    steps: [
+      [`คูณทั้งสองข้างด้วย ${coef(n)}${X}(${lin(1, k)}) โดย ${X} ≠ 0 และ ${X} ≠ ${MINUS}${k}`,
+        M(`${coef(n)}(${lin(1, k)}) + ${coef(n)}${X} = ${coef(m)}${X}(${lin(1, k)})`)],
+      ['กระจายและจัดเป็นสมการกำลังสอง', M(`${poly2(A, B, C)} = 0`)]
+    ].concat(qs.steps, [[`ตรวจเงื่อนไข ทั้งสองค่าไม่เท่ากับ 0 และไม่เท่ากับ ${MINUS}${k} จึงใช้ได้ทั้งคู่`, '']]),
+    verify: x => x.n !== 0 && !eq(x, ri(-k)) && eq(add(div(ri(1), x), div(ri(1), add(x, ri(k)))), rhs)
+  };
+};
+
+/* |ax + b| = c */
+g.absEq = function (rng, o) {
+  o = Object.assign({ intOnly: false }, o || {});
+  const a = rng.int(1, 4), b = rng.nz(-9, 9), c = rng.int(1, 12);
+  const x1 = R(c - b, a), x2 = R(-c - b, a);
+  if (o.intOnly && (!isInt(x1) || !isInt(x2))) return null;
+  return {
+    topic: 'ค่าสัมบูรณ์', ask: `จงหาค่า ${X} ทั้งหมด`, pre: `${X} =`,
+    eq: `${absb(lin(a, b))} = ${c}`,
+    ans: [x1, x2],
+    hint: `ข้างในเครื่องหมายค่าสัมบูรณ์เป็นได้ทั้ง ${c} และ ${MINUS}${c}`,
+    steps: [
+      [`ค่าสัมบูรณ์เท่ากับ ${c} แสดงว่าข้างในเป็น ${c} หรือ ${MINUS}${c}`, M(`${lin(a, b)} = ${c} หรือ ${lin(a, b)} = ${MINUS}${c}`)],
+      ['กรณีแรก', M(`${sum([[a, X]])} = ${c}${minusN(b)} = ${nn(c - b)} ⟹ ${X} = ${rHtml(x1)}`)],
+      ['กรณีที่สอง', M(`${sum([[a, X]])} = ${MINUS}${c}${minusN(b)} = ${nn(-c - b)} ⟹ ${X} = ${rHtml(x2)}`)],
+      ['ดังนั้น', M(`${X} = ${rHtml(x1)} หรือ ${X} = ${rHtml(x2)}`)]
+    ],
+    verify: x => { const v = add(mul(ri(a), x), ri(b)); return eq(v, ri(c)) || eq(v, ri(-c)); }
+  };
+};
+
+/* b^(p/n) */
+g.powRat = function (rng, o) {
+  o = Object.assign({ ns: [2, 3], neg: false }, o || {});
+  const n = rng.pick(o.ns);
+  const r = rng.pick(n === 2 ? [2, 3, 4, 5, 6] : n === 3 ? [2, 3, 4, 5] : [2, 3]);
+  const Bv = r ** n;
+  const p = rng.int(1, 2 * n - 1);
+  if (p === n || r ** p > 400) return null;
+  const neg = o.neg;
+  const ans = neg ? R(1, r ** p) : ri(r ** p);
+  const expHtml = (neg ? MINUS : '') + frac(p, n);
+  const e = neg ? -p : p;
+  return {
+    topic: 'เลขชี้กำลังเศษส่วน', search: false,
+    ask: 'จงหาค่าของนิพจน์ต่อไปนี้ ตอบเป็นจำนวนเต็มหรือเศษส่วน', pre: 'ค่า =',
+    eq: `${Bv}${sup(expHtml)} = ?`,
+    ans: [ans],
+    hint: `เขียน ${Bv} ให้อยู่ในรูป ${r} ยกกำลัง ${n} แล้วคูณเลขชี้กำลังเข้าด้วยกัน`,
+    steps: [
+      [`เขียน ${Bv} ในรูปกำลังของ ${r}`, M(`${Bv} = ${r}${sup(n)}`)],
+      ['เลขยกกำลังซ้อน ให้คูณเลขชี้กำลัง', M(`(${r}${sup(n)})${sup(expHtml)} = ${r}${sup(`${n} × ${neg ? '(' + expHtml + ')' : expHtml}`)} = ${r}${sup(nn(e))}`)],
+      neg ? ['เลขชี้กำลังติดลบ ให้กลับเป็นส่วน', M(`${r}${sup(nn(e))} = ${frac(1, `${r}${sup(p)}`)} = ${frac(1, r ** p)}`)]
+        : ['คำนวณค่า', M(`${r}${sup(p)} = ${r ** p}`)]
+    ],
+    verify: x => x.n > 0 && eq(pow(x, n), neg ? R(1, Bv ** p) : ri(Bv ** p))
+  };
+};
+
+/* (b²)^x − S·b^x + P = 0 */
+g.expEqQuad = function (rng, o) {
+  o = Object.assign({ bases: [2, 3] }, o || {});
+  const b = rng.pick(o.bases);
+  const k1 = rng.int(0, 2), k2 = rng.int(k1 + 1, 3);
+  const t1 = b ** k1, t2 = b ** k2, S = t1 + t2, P = t1 * t2;
+  const t = I('t');
+  return {
+    topic: 'สมการเอกซ์โพเนนเชียล', ask: `จงหาค่า ${X} ทั้งหมด`, pre: `${X} =`,
+    eq: `${b * b}${sup(X)} ${MINUS} ${S}·${b}${sup(X)} + ${P} = 0`,
+    ans: [ri(k1), ri(k2)],
+    hint: `${b * b}${sup(X)} เท่ากับ (${b}${sup(X)})${sup(2)} ลองให้ ${t} = ${b}${sup(X)}`,
+    steps: [
+      [`เขียน ${b * b}${sup(X)} เป็น (${b}${sup(X)})${sup(2)} แล้วให้ ${t} = ${b}${sup(X)}`,
+        M(`(${b}${sup(X)})${sup(2)} ${MINUS} ${S}(${b}${sup(X)}) + ${P} = 0 ⟹ ${t}${sup(2)} ${MINUS} ${S}${t} + ${P} = 0`)],
+      ['แยกตัวประกอบ', M(`(${t} ${MINUS} ${t1})(${t} ${MINUS} ${t2}) = 0 ⟹ ${t} = ${t1} หรือ ${t} = ${t2}`)],
+      [`แทน ${t} = ${b}${sup(X)} กลับ`, M(`${b}${sup(X)} = ${t1} ⟹ ${X} = ${k1} &nbsp;&nbsp; ${b}${sup(X)} = ${t2} ⟹ ${X} = ${k2}`)]
+    ],
+    verify: x => isInt(x) && Math.abs(x.n) <= 12 &&
+      eq(add(rsub(pow(ri(b * b), x.n), mul(ri(S), pow(ri(b), x.n))), ri(P)), ri(0))
+  };
+};
+
+/* log_b(ax + c) = k */
+g.logEq = function (rng, o) {
+  o = Object.assign({ bases: [2, 3], a: [1, 1] }, o || {});
+  const b = rng.pick(o.bases), k = rng.int(2, 3), V = b ** k;
+  if (V > 130) return null;
+  const a = rng.int(o.a[0], o.a[1]), xv = rng.int(1, 12);
+  const c = V - a * xv;
+  if (Math.abs(c) > 130) return null;
+  const steps = [['เปลี่ยนจากรูปลอการิทึมเป็นรูปเลขยกกำลัง', M(`${lin(a, c)} = ${b}${sup(k)} = ${V}`)]];
+  if (a === 1) {
+    if (c !== 0) steps.push(['ย้ายตัวเลขไปอีกข้าง', M(`${X} = ${V}${minusN(c)} = ${V - c}`)]);
+  } else {
+    steps.push(['ย้ายตัวเลขไปอีกข้าง', M(`${sum([[a, X]])} = ${V}${minusN(c)} = ${V - c}`)]);
+    steps.push([`หารทั้งสองข้างด้วย ${a}`, M(`${X} = ${fracN(V - c, a)} = ${xv}`)]);
+  }
+  steps.push(['ตรวจเงื่อนไข ค่าในลอการิทึมต้องมากกว่า 0',
+    M(`${a === 1 ? xv : `${a}(${xv})`}${c === 0 ? '' : plusN(c)} = ${V} > 0 ✓`)]);
+  return {
+    topic: 'ลอการิทึม', ask: `จงหาค่า ${X}`, pre: `${X} =`,
+    eq: `log${sub(b)}(${lin(a, c)}) = ${k}`,
+    ans: [ri(xv)],
+    hint: `log ฐาน ${b} ของบางอย่างเท่ากับ ${k} หมายถึง ${b} ยกกำลัง ${k} เท่ากับบางอย่างนั้น`,
+    steps,
+    verify: x => { const v = add(mul(ri(a), x), ri(c)); return lt(ri(0), v) && eq(v, ri(V)); }
+  };
+};
+
+/* log_b(x + a) + log_b(x + c) = k  (มีคำตอบที่ใช้ไม่ได้ 1 ค่า) */
+g.logSum = function (rng) {
+  const b = rng.pick([2, 3]), k = rng.int(2, 3), P = b ** k;
+  const pairs = [];
+  for (let u = 1; u * u < P; u++) if (P % u === 0) pairs.push([u, P / u]);
+  if (!pairs.length) return null;
+  const [u, v] = rng.pick(pairs);
+  const x0 = rng.int(2, 8), a = u - x0, c = v - x0;
+  const x1 = x0 - u - v;
+  return {
+    topic: 'ลอการิทึม', ask: `จงหาค่า ${X} (ระวังคำตอบที่ใช้ไม่ได้)`, pre: `${X} =`,
+    eq: `log${sub(b)}(${lin(1, a)}) + log${sub(b)}(${lin(1, c)}) = ${k}`,
+    ans: [ri(x0)],
+    hint: 'รวม log สองตัวเป็นตัวเดียวด้วย log A + log B = log AB แล้วอย่าลืมตรวจว่าค่าในลอการิทึมต้องมากกว่า 0',
+    steps: [
+      ['รวมลอการิทึมด้วย log A + log B = log AB', M(`log${sub(b)}((${lin(1, a)})(${lin(1, c)})) = ${k}`)],
+      ['เปลี่ยนเป็นรูปเลขยกกำลัง', M(`(${lin(1, a)})(${lin(1, c)}) = ${b}${sup(k)} = ${P}`)],
+      ['กระจายและจัดรูป', M(`${poly2(1, a + c, a * c - P)} = 0`)],
+      ['แยกตัวประกอบ', M(`(${lin(1, -x0)})(${lin(1, -x1)}) = 0 ⟹ ${X} = ${x0} หรือ ${X} = ${nn(x1)}`)],
+      ['ตรวจเงื่อนไข ค่าในลอการิทึมต้องมากกว่า 0',
+        M(`${X} = ${nn(x1)}: ${lin(1, a)} = ${nn(x1 + a)} < 0 ใช้ไม่ได้ &nbsp;&nbsp; ${X} = ${x0}: ${lin(1, a)} = ${u} > 0 และ ${lin(1, c)} = ${v} > 0 ใช้ได้`)]
+    ],
+    verify: x => {
+      const p1 = add(x, ri(a)), p2 = add(x, ri(c));
+      return lt(ri(0), p1) && lt(ri(0), p2) && eq(mul(p1, p2), ri(P));
+    }
+  };
+};
+
+/* √(x + a) = x − b */
+g.sqrtEq = function (rng) {
+  const b = rng.int(1, 4), r1 = rng.int(b + 2, b + 6), r2 = 2 * b + 1 - r1;
+  const a = b * b - r1 * r2;
+  if (Math.abs(a) > 30) return null;
+  return {
+    topic: 'สมการติดราก', ask: `จงหาค่า ${X} (ระวังคำตอบที่ใช้ไม่ได้)`, pre: `${X} =`,
+    eq: `${rad(lin(1, a))} = ${lin(1, -b)}`,
+    ans: [ri(r1)],
+    hint: 'ยกกำลังสองทั้งสองข้าง แล้วอย่าลืมแทนค่ากลับไปตรวจ',
+    steps: [
+      ['ยกกำลังสองทั้งสองข้าง', M(`${lin(1, a)} = (${lin(1, -b)})${sup(2)} = ${poly2(1, -2 * b, b * b)}`)],
+      ['ย้ายพจน์ทั้งหมดไปข้างเดียวกัน', M(`${poly2(1, -(2 * b + 1), b * b - a)} = 0`)],
+      ['แยกตัวประกอบ', M(`(${lin(1, -r1)})(${lin(1, -r2)}) = 0 ⟹ ${X} = ${r1} หรือ ${X} = ${nn(r2)}`)],
+      ['แทนค่ากลับไปตรวจ ทั้งสองค่า',
+        M(`${X} = ${nn(r2)}: ${lin(1, -b)} = ${nn(r2 - b)} เป็นค่าลบ ใช้ไม่ได้ &nbsp;&nbsp; ${X} = ${r1}: ${rad((r1 - b) ** 2)} = ${r1 - b} ใช้ได้`)]
+    ],
+    verify: x => {
+      const rhs = rsub(x, ri(b)), inside = add(x, ri(a));
+      return rhs.n >= 0 && inside.n >= 0 && eq(inside, mul(rhs, rhs));
+    }
+  };
+};
+})(globalThis);
+
+/* pools.js
+   จัดโจทย์รายชั้น ม.1–ม.6 และสร้างชุดโจทย์ 5 ข้อจากรหัสชุด (ชั้น-วันที่-ลำดับชุด)
+   รหัสเดียวกันได้โจทย์ชุดเดิมเสมอ ไม่ว่าเปิดที่เครื่องไหน */
+(function (G) {
+'use strict';
+const E = G.EQ, g = E.gen;
+const P = (bid, f) => ({ bid, f });
+
+/* E = ง่าย, M = ปานกลาง, H = ท้าทาย  (หัวข้อเป็นร่างตามหลักสูตรคร่าวๆ ปรับได้ตรงนี้) */
+const POOLS = {
+  1: {
+    E: [P('linAB', r => g.linAB(r, { a: [2, 7] })), P('decLin', r => g.decLin(r)),
+        P('powSimp', r => g.powSimp(r, { base: [2, 3, 5], forms: ['mul'] }))],
+    M: [P('linBoth', r => g.linBoth(r, { a: [3, 9] })), P('linParen', r => g.linParen(r)),
+        P('powEq', r => g.powEq(r))],
+    H: [P('linFrac', r => g.linFrac(r, { den: [2, 3, 4] })), P('linFracCross', r => g.linFracCross(r))]
+  },
+  2: {
+    E: [P('linBoth', r => g.linBoth(r, { a: [3, 9], neg: true })), P('linParen', r => g.linParen(r)),
+        P('powSimp', r => g.powSimp(r, { forms: ['mul', 'pow'] }))],
+    M: [P('linFrac', r => g.linFrac(r, { sub: true })), P('linFracCross', r => g.linFracCross(r)),
+        P('powNeg', r => g.powNeg(r))],
+    H: [P('linFrac', r => g.linFrac(r, { both: true, sub: true, den: [2, 3, 4] })),
+        P('powEq', r => g.powEq(r, { lin: true })), P('powSimp', r => g.powSimp(r, { forms: ['mul', 'pow'], neg: true }))]
+  },
+  3: {
+    E: [P('quadFactor', r => g.quadFactor(r, { forms: ['zero', 'sq'] })), P('powNeg', r => g.powNeg(r)),
+        P('linFracCross', r => g.linFracCross(r))],
+    M: [P('quadFactor', r => g.quadFactor(r, { forms: ['gen'], max: 9 })), P('ratEq', r => g.ratEq(r, { max: 6 })),
+        P('powEq', r => g.powEq(r, { lin: true }))],
+    H: [P('quadRational', r => g.quadRational(r, { mode: 'factor' })), P('ratEq', r => g.ratEq(r, { max: 10 })),
+        P('powSimp', r => g.powSimp(r, { forms: ['mul', 'pow'], neg: true }))]
+  },
+  4: {
+    E: [P('powRat', r => g.powRat(r, { ns: [2, 3] })), P('absEq', r => g.absEq(r, { intOnly: true })),
+        P('quadRational', r => g.quadRational(r, { mode: 'factor' }))],
+    M: [P('quadRational', r => g.quadRational(r, { mode: 'formula' })), P('powEq', r => g.powEq(r, { lin: true, negV: true })),
+        P('ratEq', r => g.ratEq(r, { max: 10 }))],
+    H: [P('powRat', r => g.powRat(r, { ns: [2, 3, 4], neg: true })), P('absEq', r => g.absEq(r)),
+        P('ratEq2', r => g.ratEq2(r))]
+  },
+  5: {
+    E: [P('powRat', r => g.powRat(r, { ns: [2, 3], neg: true })), P('powEq', r => g.powEq(r, { lin: true, negV: true })),
+        P('logEq', r => g.logEq(r, { a: [1, 1] }))],
+    M: [P('logEq', r => g.logEq(r, { a: [2, 3] })), P('expEqQuad', r => g.expEqQuad(r, { bases: [2] })),
+        P('absEq', r => g.absEq(r))],
+    H: [P('expEqQuad', r => g.expEqQuad(r, { bases: [2, 3] })), P('quadRational', r => g.quadRational(r, { mode: 'formula' })),
+        P('logEq', r => g.logEq(r, { bases: [2, 3, 5], a: [2, 3] }))]
+  },
+  6: {
+    E: [P('logEq', r => g.logEq(r, { a: [1, 2] })), P('powEq', r => g.powEq(r, { lin: true, negV: true })),
+        P('ratEq', r => g.ratEq(r, { max: 10 }))],
+    M: [P('expEqQuad', r => g.expEqQuad(r, { bases: [2, 3] })), P('logSum', r => g.logSum(r)),
+        P('sqrtEq', r => g.sqrtEq(r))],
+    H: [P('logSum', r => g.logSum(r)), P('sqrtEq', r => g.sqrtEq(r)), P('ratEq2', r => g.ratEq2(r))]
+  }
+};
+
+const GRADES = {
+  1: { name: 'ม.1', level: 'low', blurb: 'สมการเชิงเส้น ทศนิยม เลขยกกำลัง' },
+  2: { name: 'ม.2', level: 'low', blurb: 'สมการเศษส่วน วงเล็บ เลขชี้กำลังติดลบ' },
+  3: { name: 'ม.3', level: 'low', blurb: 'สมการกำลังสอง เศษส่วนที่มี x ตัวส่วน' },
+  4: { name: 'ม.4', level: 'high', blurb: 'เลขชี้กำลังเศษส่วน ค่าสัมบูรณ์ สูตรกำลังสอง' },
+  5: { name: 'ม.5', level: 'high', blurb: 'เอกซ์โพเนนเชียล ลอการิทึม' },
+  6: { name: 'ม.6', level: 'high', blurb: 'ลอการิทึมขั้นสูง สมการติดราก' }
+};
+
+function makeQuestion(rng, entry) {
+  for (let i = 0; i < 600; i++) {
+    let q = null;
+    try { q = entry.f(rng); } catch (e) { q = null; }
+    if (q && E.validate(q)) { q.attempts = i + 1; return E.polish(q); }
+  }
+  return null;
+}
+
+/* tiers: ง่าย 2, ปานกลาง 2, ท้าทาย 1 */
+function makeSet(grade, dateStr, setNo) {
+  const code = `${grade}-${dateStr}-${setNo}`;
+  const rng = E.makeRng(code);
+  const plan = ['E', 'E', 'M', 'M', 'H'];
+  const used = new Set();
+  const qs = [];
+  for (const tier of plan) {
+    const pool = rng.shuffle(POOLS[grade][tier]);
+    const order = pool.filter(e => !used.has(e.bid)).concat(pool.filter(e => used.has(e.bid)));
+    let q = null;
+    for (const entry of order) {
+      for (let tries = 0; tries < 8 && !q; tries++) {
+        const cand = makeQuestion(rng, entry);
+        if (cand && !qs.some(o => o.eq === cand.eq)) { q = cand; q.bid = entry.bid; }
+      }
+      if (q) break;
+    }
+    if (!q) throw new Error('สร้างโจทย์ไม่สำเร็จ ' + code + ' ' + tier);
+    q.tier = tier;
+    used.add(q.bid);
+    qs.push(q);
+  }
+  return { code, grade, level: GRADES[grade].level, questions: qs };
+}
+
+E.GRADES = GRADES;
+E.makeSet = makeSet;
+})(globalThis);
+
+/* app.js — หน้าจอ: หน้าแรก > ทำโจทย์ > ใบคะแนน
+   เก็บข้อมูลในเครื่อง (localStorage) ไม่มีระบบล็อกอิน ไม่ส่งข้อมูลออกนอกเครื่อง */
+(function () {
+'use strict';
+const EQ = globalThis.EQ;
+const $ = s => document.querySelector(s);
+const KEY = 'eqpractice.v1';
+const TOTAL = 5;
+
+/* ---------- ที่เก็บข้อมูล ---------- */
+const DEF = () => ({ name: '', grade: 1, current: null, last: null, history: [] });
+let DB = DEF(), storageOK = true;
+try { const s = localStorage.getItem(KEY); if (s) DB = Object.assign(DEF(), JSON.parse(s)); } catch (e) { storageOK = false; }
+function persist() {
+  try { localStorage.setItem(KEY, JSON.stringify(DB)); storageOK = true; } catch (e) { storageOK = false; }
+  return storageOK;
+}
+persist();
+
+/* ---------- วันที่เวลา (พ.ศ.) ---------- */
+const MONTHS = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
+const DAYS = ['อาทิตย์', 'จันทร์', 'อังคาร', 'พุธ', 'พฤหัสบดี', 'ศุกร์', 'เสาร์'];
+const pad = n => String(n).padStart(2, '0');
+const ymd = d => `${d.getFullYear()}${pad(d.getMonth() + 1)}${pad(d.getDate())}`;
+const thLong = d => `วัน${DAYS[d.getDay()]}ที่ ${d.getDate()} ${MONTHS[d.getMonth()]} ${d.getFullYear() + 543}`;
+const thShort = d => `${d.getDate()} ${MONTHS[d.getMonth()]} ${String(d.getFullYear() + 543).slice(2)}`;
+const hm = d => `${pad(d.getHours())}:${pad(d.getMinutes())} น.`;
+const dur = ms => { const s = Math.max(0, Math.round(ms / 1000)), m = Math.floor(s / 60); return m ? `${m} นาที ${s % 60} วินาที` : `${s} วินาที`; };
+const esc = s => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const parseCode = code => { const m = /^([1-6])-(\d{8})-(\d{1,3})$/.exec(code || ''); return m ? { grade: +m[1], date: m[2], no: +m[3] } : null; };
+const dateOfCode = p => new Date(+p.date.slice(0, 4), +p.date.slice(4, 6) - 1, +p.date.slice(6, 8));
+
+/* ---------- สถานะชั่วคราว ---------- */
+const S = { view: 'home', fb: {}, confirmDiscard: false, savedAt: null, sysKb: false, reviewOpen: false, codeMsg: '', error: '' };
+let tickStart = null, saveTimer = null, setCache = null, toastTimer = null;
+
+function getSet(c) {
+  if (!setCache || setCache.code !== c.code) {
+    const p = parseCode(c.code);
+    setCache = EQ.makeSet(p.grade, p.date, p.no);
+  }
+  return setCache;
+}
+function nextNo(grade) {
+  const day = ymd(new Date());
+  let mx = 0;
+  DB.history.forEach(h => { const p = parseCode(h.code); if (p && p.grade === grade && p.date === day) mx = Math.max(mx, p.no); });
+  return mx + 1;
+}
+
+/* ---------- เวลาที่ใช้ทำจริง (นับเฉพาะตอนเปิดหน้านี้อยู่) ---------- */
+function flushTick() {
+  if (tickStart !== null && DB.current) {
+    const now = Date.now();
+    DB.current.activeMs += Math.min(now - tickStart, 3 * 60 * 1000);
+    tickStart = now;
+  }
+}
+function save(showToast) {
+  flushTick();
+  persist();
+  S.savedAt = new Date();
+  const el = $('#savedat');
+  if (el) el.textContent = storageOK ? `บันทึกล่าสุด ${hm(S.savedAt)}` : 'เบราว์เซอร์นี้เก็บข้อมูลไม่ได้';
+  if (showToast) toast(storageOK ? `บันทึกแล้ว ${hm(S.savedAt)}` : 'บันทึกไม่ได้ เบราว์เซอร์นี้ไม่เก็บข้อมูล');
+}
+function saveSoon() { clearTimeout(saveTimer); saveTimer = setTimeout(() => save(false), 400); }
+function toast(msg) {
+  const t = $('#toast'); if (!t) return;
+  t.textContent = msg; t.hidden = false;
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => { t.hidden = true; }, 2200);
+}
+
+/* ---------- เริ่ม/จบชุด ---------- */
+function startSet(code) {
+  const p = parseCode(code);
+  try { setCache = EQ.makeSet(p.grade, p.date, p.no); } catch (e) { S.error = 'สร้างชุดโจทย์ไม่สำเร็จ ลองกดอีกครั้ง'; render(); return; }
+  DB.current = { code, grade: p.grade, startedAt: Date.now(), activeMs: 0, qi: 0, inputs: {}, res: {}, open: {} };
+  DB.grade = p.grade;
+  S.fb = {}; S.view = 'quiz'; S.error = '';
+  tickStart = Date.now();
+  persist(); render();
+}
+function finish() {
+  flushTick();
+  const c = DB.current, set = getSet(c);
+  const marks = set.questions.map((_, i) => !!(c.res[i] && c.res[i].ok));
+  const firsts = set.questions.map((_, i) => (c.res[i] ? c.res[i].first : ''));
+  const score = marks.filter(Boolean).length;
+  const finishedAt = Date.now();
+  DB.last = {
+    code: c.code, grade: c.grade, name: DB.name, startedAt: c.startedAt, finishedAt,
+    activeMs: c.activeMs, marks, firsts, score, total: set.questions.length,
+    topics: Array.from(new Set(set.questions.map(q => q.topic)))
+  };
+  DB.history.unshift({ code: c.code, grade: c.grade, name: DB.name, finishedAt, score, total: set.questions.length });
+  DB.history = DB.history.slice(0, 60);
+  DB.current = null; tickStart = null;
+  S.view = 'result'; S.reviewOpen = false;
+  persist(); render();
+}
+
+/* ---------- หน้าจอ ---------- */
+function homeHTML() {
+  const G = EQ.GRADES, c = DB.current, today = new Date();
+  let main;
+  if (c) {
+    const done = Object.keys(c.res).length, p = parseCode(c.code);
+    main = `<section class="panel resume">
+      <p class="eyebrow">มีชุดที่ทำค้างอยู่</p>
+      <p class="rtitle">${G[c.grade].name} · ตอบแล้ว ${done} จาก ${TOTAL} ข้อ</p>
+      <p class="small">ชุดของ${thLong(dateOfCode(p))} · เริ่มเมื่อ ${hm(new Date(c.startedAt))}</p>
+      <button class="btn primary big" data-act="resume">ทำต่อจากข้อ ${c.qi + 1}</button>
+      ${S.confirmDiscard
+        ? `<p class="warn">ชุดที่ทำค้างไว้จะหายไปทั้งหมด ต้องการเริ่มใหม่ใช่ไหม</p>
+           <div class="row"><button class="btn" data-act="discard-no">ยกเลิก</button><button class="btn" data-act="discard-yes">ยืนยัน ทิ้งชุดนี้</button></div>`
+        : `<button class="btn quiet" data-act="discard">ทิ้งชุดนี้และเริ่มใหม่</button>`}
+    </section>`;
+  } else {
+    const n = nextNo(DB.grade);
+    const grid = g => `<button type="button" class="gbtn" data-act="grade" data-v="${g}" aria-pressed="${DB.grade === g}">${G[g].name}</button>`;
+    main = `<section class="panel">
+      <div class="group"><label class="label" for="name">ชื่อเล่น</label>
+        <input class="text" id="name" type="text" autocomplete="off" maxlength="30" placeholder="พิมพ์ชื่อเล่นของหนู" value="${esc(DB.name)}"></div>
+      <div class="group"><h2>มัธยมต้น</h2><div class="grades">${[1, 2, 3].map(grid).join('')}</div></div>
+      <div class="group"><h2>มัธยมปลาย</h2><div class="grades">${[4, 5, 6].map(grid).join('')}</div></div>
+      <p class="blurb">${G[DB.grade].name}: ${G[DB.grade].blurb}</p>
+      <button class="btn primary big" data-act="start">${n === 1 ? `เริ่มทำชุดวันนี้ ${G[DB.grade].name}` : `ทำชุดเพิ่ม · ชุดที่ ${n} ของวันนี้`}</button>
+      ${S.error ? `<p class="warn">${esc(S.error)}</p>` : ''}
+    </section>`;
+  }
+  const last = DB.last
+    ? `<button class="btn" data-act="last">ดูใบคะแนนล่าสุด · ${G[DB.last.grade].name} · ${DB.last.score}/${DB.last.total}</button>` : '';
+  const hist = DB.history.length
+    ? `<details><summary>ประวัติที่ผ่านมา (${DB.history.length})</summary><div class="inner"><ul class="hist">${
+      DB.history.slice(0, 12).map(h => `<li><span>${thShort(new Date(h.finishedAt))} · ${G[h.grade].name}</span><b>${h.score}/${h.total}</b></li>`).join('')
+    }</ul></div></details>` : '';
+  const codeBox = c ? '' : `<details><summary>เปิดชุดโจทย์จากรหัส</summary><div class="inner">
+      <p class="small">ใส่รหัสที่อยู่ท้ายใบคะแนน เช่น 2-20261025-1 จะได้โจทย์ชุดเดียวกับที่เด็กทำ</p>
+      <form id="codeForm" class="row"><input class="text" id="code" type="text" autocomplete="off" placeholder="รหัสชุดโจทย์" style="flex:1 1 180px"><button class="btn" type="submit">เปิดชุดนี้</button></form>
+      ${S.codeMsg ? `<p class="warn">${esc(S.codeMsg)}</p>` : ''}</div></details>`;
+  return `<header class="brand"><h1>ห้องฝึกสมการ</h1><p>${thLong(today)}</p></header>
+    ${storageOK ? '' : '<p class="warn">เบราว์เซอร์นี้ไม่เก็บข้อมูล จึงบันทึกที่ทำค้างไว้ไม่ได้ ลองเปิดด้วย Chrome หรือ Safari ตามปกติ ไม่ใช้โหมดส่วนตัว</p>'}
+    ${main}${last}${hist}${codeBox}
+    <p class="small">ถ้าเปิดลิงก์จากแอป LINE แล้วข้อมูลที่บันทึกหาย ให้เปิดลิงก์ด้วย Chrome หรือ Safari แทน ข้อมูลเก็บอยู่ในเครื่องนี้เท่านั้น</p>`;
+}
+
+function quizHTML() {
+  const c = DB.current, set = getSet(c), i = c.qi, q = set.questions[i];
+  const G = EQ.GRADES, N = set.questions.length, open = c.open[i] || {}, res = c.res[i];
+  const doneAll = Object.keys(c.res).length === N;
+  const multi = q.ans.length > 1;
+  const dots = set.questions.map((_, k) => {
+    const r = c.res[k];
+    return `<button type="button" class="dot ${r ? (r.ok ? 'ok' : 'miss') : ''}" data-act="go" data-v="${k}" aria-label="ข้อ ${k + 1}" ${k === i ? 'aria-current="true"' : ''}>${k + 1}</button>`;
+  }).join('');
+  let fb = S.fb[i];
+  if (!fb && res) fb = res.ok ? { t: 'ok', m: 'ข้อนี้ตอบถูกตั้งแต่ครั้งแรก' } : { t: 'bad', m: 'ข้อนี้ตอบผิดในครั้งแรก ไม่ได้คะแนน' };
+  const key = (v, lab, cls) => `<button type="button" class="key ${cls || ''}" data-act="key" data-v="${v}" aria-label="${lab || v}">${v === 'del' ? '⌫' : v}</button>`;
+  const keys = ['7', '8', '9', 'del', '4', '5', '6', '-', '1', '2', '3', '/', '0', '.', ','].map(v =>
+    key(v, v === 'del' ? 'ลบ' : v === '-' ? 'เครื่องหมายลบ' : v === '/' ? 'เครื่องหมายเศษส่วน' : v === ',' ? 'จุลภาค คั่นคำตอบ' : v === '.' ? 'จุดทศนิยม' : v, v === 'del' || v === '-' || v === '/' ? 'fn' : '')
+  ).join('') + '<button type="button" class="key fn" data-act="clear" aria-label="ล้างคำตอบ">ล้าง</button>';
+  const solution = open.sol && res
+    ? `<ol class="steps">${q.steps.map(s => `<li><p>${s[0]}</p>${s[1] || ''}</li>`).join('')}</ol>
+       <p class="final">คำตอบ <span class="m">${q.pre} ${EQ.ansHtml(q)}</span></p>` : '';
+  return `<div class="topbar">
+      <button class="btn quiet" data-act="home">‹ หน้าแรก</button>
+      <div class="mid">${G[c.grade].name} · ข้อ ${i + 1} จาก ${N}</div>
+      <button class="btn" data-act="save">บันทึก</button>
+    </div>
+    <div class="dots" role="group" aria-label="เลือกข้อ">${dots}</div>
+    <section class="card">
+      <div class="meta"><span class="no">ข้อ ${i + 1} <small>/ ${N}</small></span><span class="topic">${q.topic}</span></div>
+      <p class="ask">${q.ask}</p>
+      <div class="board"><div class="eq">${q.eq}</div></div>
+      <form id="form" autocomplete="off">
+        <div class="field"><label for="ans">${q.pre}</label>
+          <input id="ans" type="text" ${S.sysKb ? '' : 'inputmode="none"'} autocapitalize="off" spellcheck="false" enterkeyhint="done" value="${esc(c.inputs[i] || '')}"></div>
+      </form>
+      <div class="pad">${keys}</div>
+      <p class="note">พิมพ์เศษส่วนด้วย / เช่น 3/4${multi ? ` · ข้อนี้มี ${q.ans.length} คำตอบ คั่นด้วยเครื่องหมาย ,` : ''}
+        · <button type="button" class="linkbtn" data-act="syskb">${S.sysKb ? 'ใช้แป้นตัวเลขในหน้านี้' : 'ใช้คีย์บอร์ดของเครื่อง'}</button></p>
+      <button type="submit" form="form" class="btn primary big">ตรวจคำตอบ</button>
+      <div class="fb ${fb ? fb.t : ''}" role="status">${fb ? esc(fb.m) : ''}</div>
+      <div class="row">
+        <button class="btn" data-act="hint" aria-expanded="${!!open.hint}">คำใบ้</button>
+        <button class="btn" data-act="sol" aria-expanded="${!!open.sol}" ${res ? '' : 'disabled'}>${res ? 'ดูวิธีทำ' : 'วิธีทำ (ดูได้หลังตรวจ)'}</button>
+      </div>
+      ${open.hint ? `<div class="box"><p>${q.hint}</p></div>` : ''}
+      ${solution}
+    </section>
+    <div class="savebar"><span class="small" id="savedat">${storageOK ? (S.savedAt ? 'บันทึกล่าสุด ' + hm(S.savedAt) : 'บันทึกอัตโนมัติทุกครั้งที่ตอบ') : 'เบราว์เซอร์นี้เก็บข้อมูลไม่ได้'}</span></div>
+    ${doneAll ? '<button class="btn primary big" data-act="finish">ตอบครบแล้ว ดูใบคะแนน</button>' : `<p class="note">ตอบแล้ว ${Object.keys(c.res).length} จาก ${N} ข้อ ต้องตรวจคำตอบครบทุกข้อจึงจะดูใบคะแนนได้</p>`}
+    <div class="row"><button class="btn" data-act="step" data-v="-1" ${i === 0 ? 'disabled' : ''}>ข้อก่อนหน้า</button><button class="btn" data-act="step" data-v="1" ${i === N - 1 ? 'disabled' : ''}>ข้อถัดไป</button></div>`;
+}
+
+function resultHTML() {
+  const L = DB.last, G = EQ.GRADES;
+  if (!L) return '<p>ยังไม่มีใบคะแนน</p><button class="btn" data-act="home">กลับหน้าแรก</button>';
+  const st = new Date(L.startedAt), fi = new Date(L.finishedAt);
+  const sameDay = ymd(st) === ymd(fi);
+  const marks = L.marks.map((ok, i) => `<div class="mark ${ok ? 'ok' : 'miss'}"><small>${i + 1}</small>${ok ? '✓' : '✗'}</div>`).join('');
+  let review = '';
+  if (S.reviewOpen) {
+    let set = null;
+    try { set = EQ.makeSet(L.grade, parseCode(L.code).date, parseCode(L.code).no); } catch (e) { set = null; }
+    review = set ? `<div class="review">${set.questions.map((q, i) => {
+      const ok = L.marks[i];
+      return `<div class="rv ${ok ? '' : 'miss'}"><header><span>ข้อ ${i + 1} · ${q.topic}</span><span class="tag ${ok ? 'ok' : 'miss'}">${ok ? 'ถูก' : 'ผิด'}</span></header>
+        <div class="eqs">${q.eq}</div>
+        <div class="ans"><span>คำตอบของหนูครั้งแรก: <b>${esc(L.firsts[i] || '-')}</b></span><span>คำตอบที่ถูก: <span class="m">${EQ.ansHtml(q)}</span></span></div>
+        ${ok ? '' : `<ol class="steps">${q.steps.map(s => `<li><p>${s[0]}</p>${s[1] || ''}</li>`).join('')}</ol>`}</div>`;
+    }).join('')}</div>` : '<p class="warn">เปิดทบทวนไม่ได้</p>';
+  }
+  const n = nextNo(L.grade);
+  return `<div class="sheet" id="sheet">
+      <div class="sheet-head"><span>ใบคะแนน · ห้องฝึกสมการ</span><span>${thShort(fi)}</span></div>
+      <div class="sheet-body">
+        <div class="who"><div class="grade-badge">${G[L.grade].name}</div>
+          <input class="name-input" id="rname" type="text" maxlength="30" placeholder="พิมพ์ชื่อเล่นตรงนี้" aria-label="ชื่อเล่น" value="${esc(L.name || '')}"></div>
+        <div class="score-row"><div class="score-big">${L.score}<small> / ${L.total}</small></div><span>คะแนน</span></div>
+        <div class="marks">${marks}</div>
+        <dl class="facts" style="margin:0">
+          <div><dt>วันที่</dt><dd>${thLong(fi)}</dd></div>
+          <div><dt>เริ่ม</dt><dd>${sameDay ? '' : thShort(st) + ' '}${hm(st)}</dd></div>
+          <div><dt>เสร็จ</dt><dd>${hm(fi)}</dd></div>
+          <div><dt>เวลาที่ใช้ทำจริง</dt><dd>${dur(L.activeMs)}</dd></div>
+          <div><dt>หัวข้อ</dt><dd>${esc(L.topics.join(', '))}</dd></div>
+          <div><dt>รหัสชุดโจทย์</dt><dd class="code">${esc(L.code)}</dd></div>
+        </dl>
+      </div>
+    </div>
+    <p class="small">แคปหน้าจอส่วนใบคะแนนนี้ส่งให้คุณครูหรือผู้ปกครองได้เลย</p>
+    <div class="row"><button class="btn" data-act="review">${S.reviewOpen ? 'ซ่อนการทบทวน' : 'ทบทวนโจทย์และวิธีทำ'}</button><button class="btn primary" data-act="again">ทำชุดเพิ่ม (ชุดที่ ${n})</button></div>
+    ${review}
+    <button class="btn quiet" data-act="home">‹ กลับหน้าแรก</button>`;
+}
+
+let lastKey = '';
+function render() {
+  const app = $('#app');
+  let html, level = EQ.GRADES[DB.grade].level;
+  try {
+    if (S.view === 'quiz' && DB.current) { html = quizHTML(); level = EQ.GRADES[DB.current.grade].level; }
+    else if (S.view === 'result') { html = resultHTML(); if (DB.last) level = EQ.GRADES[DB.last.grade].level; }
+    else { S.view = 'home'; html = homeHTML(); }
+  } catch (e) { S.view = 'home'; html = `<p class="warn">เกิดข้อผิดพลาด: ${esc(e.message)}</p><button class="btn" data-act="home">กลับหน้าแรก</button>`; }
+  app.dataset.level = level;
+  $('#screen').innerHTML = html;
+  const k = S.view + (DB.current ? DB.current.qi : '');
+  if (k !== lastKey) { window.scrollTo(0, 0); lastKey = k; }
+}
+
+/* ---------- ตรวจคำตอบ ---------- */
+function check() {
+  const c = DB.current; if (!c) return;
+  flushTick();
+  const q = getSet(c).questions[c.qi], i = c.qi, raw = (c.inputs[i] || '');
+  const j = EQ.judge(q, raw);
+  let fb;
+  if (j.state === 'empty') fb = { t: 'info', m: 'พิมพ์คำตอบก่อน แล้วค่อยกดตรวจ' };
+  else if (j.state === 'invalid') fb = { t: 'info', m: 'ใส่เป็นตัวเลขหรือเศษส่วน เช่น 3/4 หรือ -2' };
+  else if (j.state === 'count') fb = { t: 'info', m: `ข้อนี้มี ${j.n} คำตอบ ใส่ให้ครบ คั่นด้วยเครื่องหมาย ,` };
+  else if (!c.res[i]) {
+    c.res[i] = { ok: j.state === 'ok', first: raw };
+    if (j.state === 'ok') fb = { t: 'ok', m: 'ถูกต้อง ได้ 1 คะแนน' };
+    else { fb = { t: 'bad', m: 'ยังไม่ถูก ข้อนี้ไม่ได้คะแนน ดูวิธีทำแล้วลองใหม่ได้ (ไม่นับคะแนนแล้ว)' }; (c.open[i] = c.open[i] || {}).sol = true; }
+  } else {
+    fb = j.state === 'ok' ? { t: 'ok', m: 'ถูกแล้ว (คะแนนข้อนี้นับจากครั้งแรกไปแล้ว)' } : { t: 'bad', m: 'ยังไม่ถูก ลองดูวิธีทำอีกครั้ง' };
+  }
+  S.fb[i] = fb;
+  save(false); render();
+  const inp = $('#ans'); if (inp) { inp.focus({ preventScroll: true }); inp.setSelectionRange(inp.value.length, inp.value.length); }
+}
+
+/* ---------- เหตุการณ์ ---------- */
+document.addEventListener('click', e => {
+  const b = e.target.closest('[data-act]'); if (!b) return;
+  const act = b.dataset.act, v = b.dataset.v, c = DB.current;
+  if (c) flushTick();
+  switch (act) {
+    case 'grade': DB.grade = +v; persist(); render(); break;
+    case 'start': startSet(`${DB.grade}-${ymd(new Date())}-${nextNo(DB.grade)}`); break;
+    case 'resume': S.view = 'quiz'; tickStart = Date.now(); render(); break;
+    case 'discard': S.confirmDiscard = true; render(); break;
+    case 'discard-no': S.confirmDiscard = false; render(); break;
+    case 'discard-yes': DB.current = null; S.confirmDiscard = false; tickStart = null; persist(); render(); break;
+    case 'last': S.view = 'result'; S.reviewOpen = false; render(); break;
+    case 'home': if (c) { save(false); tickStart = null; } S.view = 'home'; S.error = ''; render(); break;
+    case 'save': save(true); break;
+    case 'go': c.qi = +v; save(false); render(); break;
+    case 'step': c.qi = Math.max(0, Math.min(TOTAL - 1, c.qi + +v)); save(false); render(); break;
+    case 'key': {
+      const inp = $('#ans'); if (!inp) break;
+      const a = inp.selectionStart == null ? inp.value.length : inp.selectionStart, z = inp.selectionEnd == null ? a : inp.selectionEnd;
+      let val = inp.value, pos;
+      if (v === 'del') { if (a !== z) { val = val.slice(0, a) + val.slice(z); pos = a; } else if (a > 0) { val = val.slice(0, a - 1) + val.slice(a); pos = a - 1; } else pos = 0; }
+      else { val = val.slice(0, a) + v + val.slice(z); pos = a + 1; }
+      inp.value = val; c.inputs[c.qi] = val; inp.focus({ preventScroll: true }); inp.setSelectionRange(pos, pos); saveSoon(); break;
+    }
+    case 'clear': { const inp = $('#ans'); if (inp) { inp.value = ''; c.inputs[c.qi] = ''; inp.focus({ preventScroll: true }); saveSoon(); } break; }
+    case 'syskb': S.sysKb = !S.sysKb; render(); break;
+    case 'hint': { const o = c.open[c.qi] = c.open[c.qi] || {}; o.hint = !o.hint; save(false); render(); break; }
+    case 'sol': { const o = c.open[c.qi] = c.open[c.qi] || {}; o.sol = !o.sol; save(false); render(); break; }
+    case 'finish': finish(); break;
+    case 'review': S.reviewOpen = !S.reviewOpen; render(); break;
+    case 'again': startSet(`${DB.last.grade}-${ymd(new Date())}-${nextNo(DB.last.grade)}`); break;
+  }
+});
+document.addEventListener('submit', e => {
+  e.preventDefault();
+  if (e.target.id === 'form') check();
+  else if (e.target.id === 'codeForm') {
+    const code = ($('#code').value || '').trim();
+    if (!parseCode(code)) { S.codeMsg = 'รหัสไม่ถูกต้อง ตัวอย่างรหัส 2-20261025-1'; render(); return; }
+    S.codeMsg = ''; startSet(code);
+  }
+});
+document.addEventListener('input', e => {
+  const t = e.target;
+  if (t.id === 'ans' && DB.current) { DB.current.inputs[DB.current.qi] = t.value; saveSoon(); }
+  else if (t.id === 'name') { DB.name = t.value.trim(); persist(); }
+  else if (t.id === 'rname' && DB.last) { DB.last.name = t.value.trim(); DB.name = DB.last.name; if (DB.history[0]) DB.history[0].name = DB.last.name; persist(); }
+});
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) { flushTick(); tickStart = null; persist(); }
+  else if (S.view === 'quiz' && DB.current) tickStart = Date.now();
+});
+window.addEventListener('pagehide', () => { flushTick(); persist(); });
+
+/* เปิดหน้าเว็บ: ถ้ามีชุดที่ค้างอยู่ ให้แสดงการ์ด "ทำต่อ" ที่หน้าแรก */
+render();
+})();
+
+</script>
+</body>
+</html>
