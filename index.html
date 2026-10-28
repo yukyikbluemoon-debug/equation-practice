@@ -17,6 +17,7 @@ body{margin:0}
   --paper:#F3F6FB; --grid:#DCE4F0; --card:#FFFFFF; --ink:#15223A; --muted:#566887; --line:#D0DAE8;
   --accent:#0C7C86; --accent-soft:#D9EFF0; --on-accent:#FFFFFF;
   --ok:#157A3C; --ok-soft:#DBF2E2; --bad:#B93027; --bad-soft:#FBE3E0;
+  --mach:#E8892B; --mach-d:#B65E0C; --load:#3F7FD6; --load-d:#1F4F9E; --force:#D6284A; --wood:#B9824F; --wood-d:#7A4F28; --rope:#9A7B4F;
   --f-ui:'Prompt','Sarabun',system-ui,sans-serif;
   --f-body:'Sarabun','Prompt',system-ui,sans-serif;
   --f-math:'STIX Two Text','Times New Roman',Georgia,serif;
@@ -26,6 +27,7 @@ body{margin:0}
     --paper:#0C1322; --grid:#1A2640; --card:#131C30; --ink:#E6ECF8; --muted:#97A6C2; --line:#27365A;
     --accent:#4FC3CB; --accent-soft:#12303A; --on-accent:#05141A;
     --ok:#62D68C; --ok-soft:#133323; --bad:#FF8F85; --bad-soft:#3B1C1E; color-scheme:dark;
+    --mach:#F0A04B; --mach-d:#C77A24; --load:#5B93E6; --load-d:#9CC0F5; --force:#FF7A92; --wood:#9A6B3F; --wood-d:#C99A6B; --rope:#C4A576;
   }
   :root:not([data-theme="light"]) .app[data-level="high"]{--accent:#93A2FF;--accent-soft:#1D2548;--on-accent:#0A0F2B}
 }
@@ -33,6 +35,7 @@ body{margin:0}
   --paper:#0C1322; --grid:#1A2640; --card:#131C30; --ink:#E6ECF8; --muted:#97A6C2; --line:#27365A;
   --accent:#4FC3CB; --accent-soft:#12303A; --on-accent:#05141A;
   --ok:#62D68C; --ok-soft:#133323; --bad:#FF8F85; --bad-soft:#3B1C1E; color-scheme:dark;
+    --mach:#F0A04B; --mach-d:#C77A24; --load:#5B93E6; --load-d:#9CC0F5; --force:#FF7A92; --wood:#9A6B3F; --wood-d:#C99A6B; --rope:#C4A576;
 }
 :root[data-theme="dark"] .app[data-level="high"]{--accent:#93A2FF;--accent-soft:#1D2548;--on-accent:#0A0F2B}
 .app[data-level="high"]{--accent:#3347D0;--accent-soft:#E2E6FB;--on-accent:#FFFFFF}
@@ -189,6 +192,42 @@ sup .frac,sub .frac{font-size:1.15em}
 @media (prefers-reduced-motion:no-preference){
   .dot,.btn,.gbtn,.key{transition:background-color .15s,border-color .15s}
 }
+
+/* ชุดพิเศษ: เครื่องกล การ์ดความรู้ ภาพประกอบ */
+.grades.one{grid-template-columns:1fr}
+.grades.one .gbtn{font-size:1.1rem}
+.grade-badge.long{font-size:1.7rem;line-height:1.2}
+.btn.sm{min-height:36px;padding:6px 14px;font-size:.88rem;flex:0 0 auto}
+.lesson .intro{font-size:1rem}
+.board.fig{background-image:none;background-color:var(--card);padding:6px;overflow:hidden}
+.board.fm{padding:4px 10px;background-image:none;text-align:center}
+.board.fm .blk{font-size:1.5rem;padding:4px 0}
+.fig svg{display:block;width:100%;height:auto;max-width:480px;margin:0 auto}
+.syms{margin:0;display:flex;flex-direction:column;gap:8px}
+.syms div{display:grid;grid-template-columns:3.2rem 1fr;gap:10px;align-items:baseline}
+.syms dt{font-size:1.25rem;text-align:center;background:var(--accent-soft);color:var(--accent);border-radius:8px;padding:2px 0}
+.syms dd{margin:0}
+.field .unit{color:var(--muted);font-size:.95rem;white-space:nowrap}
+.sv-t{font-family:var(--f-math);font-size:17px;fill:var(--ink);paint-order:stroke;stroke:var(--card);stroke-width:4px;stroke-linejoin:round}
+.sv-tf{fill:var(--force)} .sv-tl{fill:var(--load-d)}
+.sv-tw{font-family:var(--f-math);font-size:15px;font-weight:600;fill:#fff}
+.sv-tb{font-family:var(--f-ui);font-size:13px;font-weight:600;fill:var(--ink)}
+.sv-ma{fill:var(--mach);stroke:var(--mach-d);stroke-width:2;stroke-linejoin:round}
+.sv-lo{fill:var(--load);stroke:var(--load-d);stroke-width:2;stroke-linejoin:round}
+.sv-wood{fill:var(--wood);stroke:var(--wood-d);stroke-width:2;stroke-linejoin:round}
+.sv-ring{fill:var(--card);stroke:var(--mach);stroke-width:9}
+.sv-spoke{stroke:var(--mach);stroke-width:6;stroke-linecap:round}
+.sv-thread{stroke:var(--mach-d);stroke-width:2}
+.sv-dot{fill:var(--card);stroke:var(--ink);stroke-width:1.5}
+.sv-badge{fill:var(--card);stroke:var(--ink);stroke-width:1.5}
+.sv-line{stroke:var(--ink);stroke-width:1.5;fill:none}
+.sv-dash{stroke:var(--muted);stroke-width:1.2;stroke-dasharray:4 3;fill:none}
+.sv-rope{stroke:var(--rope);stroke-width:4;fill:none;stroke-linecap:round}
+.sv-rl{stroke:var(--card);stroke-width:3;stroke-linecap:round}
+.sv-s-fo{stroke:var(--force);stroke-width:4;stroke-linecap:round}
+.sv-f-fo{fill:var(--force)}
+.sv-s-lo{stroke:var(--load-d);stroke-width:4;stroke-linecap:round}
+.sv-f-lo{fill:var(--load-d)}
 
 </style>
 </head>
@@ -358,7 +397,7 @@ function cands() {
 function validate(q) {
   try {
     if (!q || !q.ans || !q.ans.length || typeof q.verify !== 'function') return false;
-    const blob = [q.eq, q.ask, q.hint].concat(...(q.steps || []));
+    const blob = [q.eq, q.ask, q.hint || (q.hints && q.hints[0])].concat(...(q.steps || []), q.hints || []);
     if (blob.some(s => typeof s !== 'string' || /NaN|undefined|Infinity|\[object/.test(s))) return false;
     for (let i = 0; i < q.ans.length; i++)
       for (let j = i + 1; j < q.ans.length; j++) if (eq(q.ans[i], q.ans[j])) return false;
@@ -377,7 +416,9 @@ function validate(q) {
 
 /* ตรวจคำตอบที่เด็กพิมพ์ */
 function judge(q, raw) {
-  const s = (raw || '').replace(/^\s*[a-zA-Z]\s*=\s*/, '');
+  let s0 = raw || '';
+  if (q.unit) s0 = s0.replace(/\s*(N|นิวตัน)\s*$/i, '');   // เด็กพิมพ์หน่วยต่อท้ายได้
+  const s = s0.replace(/^\s*[a-zA-Z]\s*=\s*/, '');
   const parts = s.split(/[,;，]/).map(t => t.trim()).filter(t => t !== '');
   if (!parts.length) return { state: 'empty' };
   const vals = parts.map(parse);
@@ -391,7 +432,9 @@ function judge(q, raw) {
 /* เปลี่ยนเครื่องหมายลบแบบขีดสั้น (-) หน้าตัวเลข ให้เป็นเครื่องหมายลบจริง (−) ในข้อความ HTML */
 const fixMinus = s => (typeof s === 'string' ? s.replace(/(^|[\s(>=])-(?=\d)/g, '$1' + MINUS) : s);
 function polish(q) {
-  q.eq = fixMinus(q.eq); q.ask = fixMinus(q.ask); q.hint = fixMinus(q.hint);
+  if (!/<svg/.test(q.eq)) q.eq = fixMinus(q.eq);   // ภาพ SVG มีเลขลบในพิกัด ห้ามแก้
+  q.ask = fixMinus(q.ask); q.hint = fixMinus(q.hint || (q.hints ? q.hints[0] : ''));
+  if (q.hints) q.hints = q.hints.map(fixMinus);
   q.steps = q.steps.map(s => [fixMinus(s[0]), fixMinus(s[1])]);
   return q;
 }
@@ -994,6 +1037,315 @@ g.sqrtEq = function (rng) {
 };
 })(globalThis);
 
+/* gens-machines.js
+   ชุดพิเศษ: เครื่องกลอย่างง่าย 6 ชนิด (สกรู ลิ่ม ล้อและเพลา พื้นเอียง รอก คาน)
+   ระดับพื้นฐาน: ทุกข้อให้หา E (แรงที่ต้องออก) ตัวเลขลงตัว คำตอบเป็นจำนวนเต็ม ไม่ต้องแปลงหน่วย
+   แต่ละข้อมี: การ์ดความรู้ (ภาพ + อธิบาย + สูตร + ความหมายตัวย่อ), ภาพประกอบโจทย์ที่ใส่ตัวเลขจริง, วิธีทำเป็นขั้น */
+(function (G) {
+'use strict';
+const E = G.EQ;
+const { R, ri, mul, eq } = E;
+const { I, frac, M } = E.h;
+const g = E.gen;
+
+/* ---------- ตัวช่วยวาด SVG (ไม่ใช้ <i> เพราะ HTML จะถือว่าออกจาก SVG) ---------- */
+const rd = v => Math.round(v * 10) / 10;
+const it = s => `<tspan font-style="italic">${s}</tspan>`;
+const svgOpen = (h, label) => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 ${h}" role="img" aria-label="${label}">`;
+const txt = (x, y, s, o) => { o = o || {}; return `<text class="sv-t${o.c ? ' ' + o.c : ''}" x="${rd(x)}" y="${rd(y)}" text-anchor="${o.a || 'middle'}">${s}</text>`; };
+const sb = (base, subs, rest) => `${it(base)}<tspan font-size="11" dy="4">${subs}</tspan><tspan dy="-4">${rest || ''}</tspan>`;
+const line = (x1, y1, x2, y2, c) => `<line class="${c || 'sv-line'}" x1="${rd(x1)}" y1="${rd(y1)}" x2="${rd(x2)}" y2="${rd(y2)}"/>`;
+function dim(x1, y1, x2, y2) {
+  const dx = x2 - x1, dy = y2 - y1, len = Math.hypot(dx, dy), nx = -dy / len * 5, ny = dx / len * 5;
+  return line(x1, y1, x2, y2) + line(x1 - nx, y1 - ny, x1 + nx, y1 + ny) + line(x2 - nx, y2 - ny, x2 + nx, y2 + ny);
+}
+function arrow(x1, y1, x2, y2, c) {
+  const dx = x2 - x1, dy = y2 - y1, len = Math.hypot(dx, dy), ux = dx / len, uy = dy / len, hd = 12;
+  const bx = x2 - ux * hd, by = y2 - uy * hd, px = -uy * hd * 0.5, py = ux * hd * 0.5;
+  return `<line class="sv-s-${c}" x1="${rd(x1)}" y1="${rd(y1)}" x2="${rd(bx)}" y2="${rd(by)}"/>` +
+    `<polygon class="sv-f-${c}" points="${rd(x2)},${rd(y2)} ${rd(bx + px)},${rd(by + py)} ${rd(bx - px)},${rd(by - py)}"/>`;
+}
+const lab = (sym, v, unit) => (v === undefined || v === null) ? it(sym) : `${it(sym)} = ${v}${unit ? ' ' + unit : ''}`;
+const labE = v => (v ? `${it('E')} = ?` : it('E'));
+
+/* ---------- 1) สกรู ---------- */
+function svgScrew(v) {
+  let s = svgOpen(220, 'ภาพสกรูที่มีด้ามหมุน');
+  s += `<rect class="sv-lo" x="115" y="170" width="110" height="40" rx="3"/>`;
+  s += `<rect class="sv-ma" x="158" y="62" width="24" height="116"/>`;
+  for (let y = 72; y <= 160; y += 12) s += line(158, y, 182, y + 6, 'sv-thread');
+  s += `<rect class="sv-ma" x="40" y="50" width="260" height="12" rx="6"/>`;
+  s += dim(170, 40, 46, 40) + txt(108, 32, lab('r', v && v.r, 'cm'));
+  s += arrow(294, 4, 294, 46, 'fo') + txt(284, 28, labE(v), { a: 'end', c: 'sv-tf' });
+  s += line(182, 114, 204, 114, 'sv-dash') + line(182, 126, 204, 126, 'sv-dash') + dim(198, 114, 198, 126);
+  s += txt(210, 125, lab('P', v && v.P, 'cm'), { a: 'start' });
+  s += arrow(240, 208, 240, 176, 'lo') + txt(334, 166, lab('W', v && v.W, 'N'), { a: 'end', c: 'sv-tl' });
+  return s + '</svg>';
+}
+g.mScrew = function (rng) {
+  const r = rng.pick([7, 14]), P = rng.pick([1, 2, 4]), e = rng.int(2, 10) * 5;
+  const circ = 44 * (r / 7);                 // 2πr เมื่อ π = 22/7
+  const W = e * circ / P, v = { r, P, W };
+  return {
+    kind: 'machine', topic: 'สกรู', pre: 'E =', unit: 'นิวตัน',
+    ask: `ช่างใช้สกรูกดวัตถุชิ้นหนึ่ง วัตถุต้านด้วยแรง ${W} นิวตัน ด้ามหมุนมีรัศมี ${r} เซนติเมตร และเกลียวมีพิทช์ ${P} เซนติเมตร (ใช้ π = 22/7)<br>จงหาแรง ${I('E')} ที่ต้องออกเพื่อหมุนด้าม`,
+    eq: svgScrew(v),
+    ans: [ri(e)],
+    hints: [`ดูการ์ดความรู้ของสกรู แล้วใช้สูตร E × 2πr = W × P`,
+      `แทนค่า r, P, W และ π = 22/7 ลงในสูตร ฝั่งซ้ายที่คูณกับ E จะได้ ${circ} จากนั้นหารทั้งสองข้างด้วย ${circ}`],
+    steps: [
+      ['ดูภาพและอ่านค่าที่โจทย์ให้', M(`${I('W')} = ${W} N &nbsp;&nbsp; ${I('r')} = ${r} cm &nbsp;&nbsp; ${I('P')} = ${P} cm`)],
+      ['เลือกสูตรของสกรู', M(`${I('E')} × 2π${I('r')} = ${I('W')} × ${I('P')}`)],
+      ['แทนค่า (ใช้ π = 22/7)', M(`${I('E')} × 2 × ${frac(22, 7)} × ${r} = ${W} × ${P}`)],
+      [`คำนวณ ฝั่งซ้ายคูณกันได้ ${circ} ฝั่งขวาคูณกันได้ ${W * P} แล้วหารทั้งสองข้างด้วย ${circ}`,
+        M(`${I('E')} × ${circ} = ${W * P} ⟹ ${I('E')} = ${frac(W * P, circ)} = ${e}`)]
+    ],
+    verify: x => eq(mul(mul(x, mul(ri(2), R(22, 7))), ri(r)), ri(W * P)),
+    lesson: LESSON.screw
+  };
+};
+
+/* ---------- 2) ลิ่ม ---------- */
+function svgWedge(v) {
+  let s = svgOpen(220, 'ภาพลิ่มที่ผ่าท่อนไม้');
+  s += `<polygon class="sv-wood" points="96,128 158,128 170,176 170,208 96,208"/>`;
+  s += `<polygon class="sv-wood" points="244,128 182,128 170,176 170,208 244,208"/>`;
+  s += `<polygon class="sv-ma" points="138,48 202,48 170,176"/>`;
+  s += dim(138, 34, 202, 34) + txt(212, 39, lab('t', v && v.t, 'cm'), { a: 'start' });
+  s += arrow(170, 2, 170, 46, 'fo') + txt(182, 19, labE(v), { a: 'start', c: 'sv-tf' });
+  const ux = 32 / 131.9, uy = 128 / 131.9, nx = -uy, ny = ux, off = 26;
+  s += dim(138 + nx * off, 48 + ny * off, 170 + nx * off, 176 + ny * off);
+  s += txt(112, 122, lab('L', v && v.L, 'cm'), { a: 'end' });
+  s += arrow(30, 168, 92, 168, 'lo') + arrow(310, 168, 248, 168, 'lo');
+  s += txt(8, 156, lab('W', v && v.W, 'N'), { a: 'start', c: 'sv-tl' });
+  return s + '</svg>';
+}
+g.mWedge = function (rng) {
+  const t = rng.pick([2, 3, 4, 5]), m = rng.pick([3, 4, 5, 6]), L = m * t, e = rng.int(2, 8) * 5;
+  const W = e * m, v = { L, t, W };
+  return {
+    kind: 'machine', topic: 'ลิ่ม', pre: 'E =', unit: 'นิวตัน',
+    ask: `ใช้ขวานผ่าฟืน ลิ่มของขวานยาว ${L} เซนติเมตร หัวลิ่มหนา ${t} เซนติเมตร เนื้อไม้ต้านการแยกด้วยแรง ${W} นิวตัน<br>จงหาแรง ${I('E')} ที่ต้องกดที่หัวลิ่ม`,
+    eq: svgWedge(v),
+    ans: [ri(e)],
+    hints: [`ดูการ์ดความรู้ของลิ่ม แล้วใช้สูตร E × L = W × t`,
+      `แทนค่า L, W และ t ลงในสูตร ฝั่งซ้ายคือ E × ${L} แล้วหารทั้งสองข้างด้วย ${L}`],
+    steps: [
+      ['ดูภาพและอ่านค่าที่โจทย์ให้', M(`${I('W')} = ${W} N &nbsp;&nbsp; ${I('L')} = ${L} cm &nbsp;&nbsp; ${I('t')} = ${t} cm`)],
+      ['เลือกสูตรของลิ่ม', M(`${I('E')} × ${I('L')} = ${I('W')} × ${I('t')}`)],
+      ['แทนค่า', M(`${I('E')} × ${L} = ${W} × ${t}`)],
+      [`คำนวณ ฝั่งขวาคูณกันได้ ${W * t} แล้วหารทั้งสองข้างด้วย ${L}`,
+        M(`${I('E')} × ${L} = ${W * t} ⟹ ${I('E')} = ${frac(W * t, L)} = ${e}`)]
+    ],
+    verify: x => eq(mul(x, ri(L)), ri(W * t)),
+    lesson: LESSON.wedge
+  };
+};
+
+/* ---------- 3) ล้อและเพลา ---------- */
+function svgWheel(v) {
+  const cx = 135, cy = 96;
+  let s = svgOpen(224, 'ภาพล้อและเพลาที่มีเชือกผูกน้ำหนัก');
+  s += `<circle class="sv-ring" cx="${cx}" cy="${cy}" r="66"/>`;
+  [[1, 1], [1, -1], [-1, 1], [-1, -1]].forEach(([a, b]) => { s += `<line class="sv-spoke" x1="${cx}" y1="${cy}" x2="${rd(cx + a * 44)}" y2="${rd(cy + b * 44)}"/>`; });
+  s += `<circle class="sv-lo" cx="${cx}" cy="${cy}" r="22"/><circle class="sv-dot" cx="${cx}" cy="${cy}" r="4"/>`;
+  s += `<line class="sv-rope" x1="157" y1="96" x2="157" y2="178"/>`;
+  s += `<rect class="sv-lo" x="135" y="178" width="44" height="34" rx="3"/>`;
+  s += txt(188, 200, lab('W', v && v.W, 'N'), { a: 'start', c: 'sv-tl' });
+  s += dim(cx, cy, cx, 26) + txt(cx, 16, lab('R', v && v.R, 'cm'));
+  s += line(cx, cy, 157, cy, 'sv-rl') + line(157, cy, 214, cy, 'sv-dash') + txt(220, cy + 6, lab('r', v && v.r, 'cm'), { a: 'start' });
+  s += arrow(65, 100, 65, 152, 'fo') + txt(57, 134, labE(v), { a: 'end', c: 'sv-tf' });
+  return s + '</svg>';
+}
+g.mWheel = function (rng) {
+  const r = rng.pick([5, 10]), m = rng.pick([2, 3, 4]), Rr = m * r, e = rng.int(2, 8) * 5;
+  const W = e * m, v = { R: Rr, r, W };
+  return {
+    kind: 'machine', topic: 'ล้อและเพลา', pre: 'E =', unit: 'นิวตัน',
+    ask: `กว้านตักน้ำมีล้อรัศมี ${Rr} เซนติเมตร ติดกับเพลารัศมี ${r} เซนติเมตร ถังน้ำหนัก ${W} นิวตันแขวนกับเชือกที่พันรอบเพลา<br>จงหาแรง ${I('E')} ที่ต้องออกที่ขอบล้อ`,
+    eq: svgWheel(v),
+    ans: [ri(e)],
+    hints: [`ดูการ์ดความรู้ของล้อและเพลา แล้วใช้สูตร E × R = W × r`,
+      `แทนค่า R, W และ r ลงในสูตร ฝั่งซ้ายคือ E × ${Rr} แล้วหารทั้งสองข้างด้วย ${Rr}`],
+    steps: [
+      ['ดูภาพและอ่านค่าที่โจทย์ให้', M(`${I('W')} = ${W} N &nbsp;&nbsp; ${I('R')} = ${Rr} cm &nbsp;&nbsp; ${I('r')} = ${r} cm`)],
+      ['เลือกสูตรของล้อและเพลา', M(`${I('E')} × ${I('R')} = ${I('W')} × ${I('r')}`)],
+      ['แทนค่า', M(`${I('E')} × ${Rr} = ${W} × ${r}`)],
+      [`คำนวณ ฝั่งขวาคูณกันได้ ${W * r} แล้วหารทั้งสองข้างด้วย ${Rr}`,
+        M(`${I('E')} × ${Rr} = ${W * r} ⟹ ${I('E')} = ${frac(W * r, Rr)} = ${e}`)]
+    ],
+    verify: x => eq(mul(x, ri(Rr)), ri(W * r)),
+    lesson: LESSON.wheel
+  };
+};
+
+/* ---------- 4) พื้นเอียง ---------- */
+function svgIncline(v) {
+  const x0 = 24, x1 = 244, yb = 190, yh = 90, dx = x1 - x0, dy = yb - yh, len = Math.hypot(dx, dy);
+  const ux = dx / len, uy = -dy / len, nx = uy, ny = -ux, ang = Math.atan2(dy, dx) * 180 / Math.PI;
+  const px = x0 + 0.3 * dx, py = yb - 0.3 * dy, cx = px + nx * 15, cy = py + ny * 15;
+  let s = svgOpen(220, 'ภาพพื้นเอียงที่มีลังวางอยู่');
+  s += line(10, yb, 330, yb);
+  s += `<polygon class="sv-ma" points="${x0},${yb} ${x1},${yb} ${x1},${yh}"/>`;
+  s += `<g transform="translate(${rd(cx)} ${rd(cy)}) rotate(${rd(-ang)})"><rect class="sv-lo" x="-26" y="-15" width="52" height="30" rx="2"/>` +
+    `<text class="sv-tw" x="0" y="5" text-anchor="middle">${v ? v.W + ' N' : it('W')}</text></g>`;
+  const sx = cx + ux * 32, sy = cy + uy * 32;
+  s += arrow(sx, sy, sx + ux * 58, sy + uy * 58, 'fo') + txt(sx + ux * 58 + 8, sy + uy * 58 - 4, labE(v), { a: 'start', c: 'sv-tf' });
+  const off = 50, ax = x0 + nx * off, ay = yb + ny * off, bx = x1 + nx * off, by = yh + ny * off;
+  s += line(x0, yb, ax, ay, 'sv-dash') + line(x1, yh, bx, by, 'sv-dash') + dim(ax, ay, bx, by);
+  s += txt((ax + bx) / 2 + nx * 13, (ay + by) / 2 + ny * 15, lab('L', v && v.L, 'm'));
+  s += line(x1, yb, 266, yb, 'sv-dash') + line(x1, yh, 266, yh, 'sv-dash') + dim(262, yb, 262, yh);
+  s += txt(270, 146, lab('h', v && v.h, 'm'), { a: 'start' });
+  return s + '</svg>';
+}
+g.mIncline = function (rng) {
+  const h = rng.pick([1, 2]), m = rng.pick([2, 3, 4, 5]), L = m * h, e = rng.int(2, 8) * 5;
+  const W = e * m, v = { L, h, W };
+  return {
+    kind: 'machine', topic: 'พื้นเอียง', pre: 'E =', unit: 'นิวตัน',
+    ask: `ลากลังหนัก ${W} นิวตันขึ้นไปตามทางลาดที่ยาว ${L} เมตร และสูง ${h} เมตร (ไม่คิดแรงเสียดทาน)<br>จงหาแรง ${I('E')} ที่ต้องใช้ลาก`,
+    eq: svgIncline(v),
+    ans: [ri(e)],
+    hints: [`ดูการ์ดความรู้ของพื้นเอียง แล้วใช้สูตร E × L = W × h`,
+      `แทนค่า L, W และ h ลงในสูตร ฝั่งซ้ายคือ E × ${L} แล้วหารทั้งสองข้างด้วย ${L}`],
+    steps: [
+      ['ดูภาพและอ่านค่าที่โจทย์ให้', M(`${I('W')} = ${W} N &nbsp;&nbsp; ${I('L')} = ${L} m &nbsp;&nbsp; ${I('h')} = ${h} m`)],
+      ['เลือกสูตรของพื้นเอียง', M(`${I('E')} × ${I('L')} = ${I('W')} × ${I('h')}`)],
+      ['แทนค่า', M(`${I('E')} × ${L} = ${W} × ${h}`)],
+      [`คำนวณ ฝั่งขวาคูณกันได้ ${W * h} แล้วหารทั้งสองข้างด้วย ${L}`,
+        M(`${I('E')} × ${L} = ${W * h} ⟹ ${I('E')} = ${frac(W * h, L)} = ${e}`)]
+    ],
+    verify: x => eq(mul(x, ri(L)), ri(W * h)),
+    lesson: LESSON.incline
+  };
+};
+
+/* ---------- 5) รอก (รอกเคลื่อนที่ 1 ตัว n = 2) ---------- */
+function svgPulley(v) {
+  let s = svgOpen(230, 'ภาพรอกเคลื่อนที่ที่แขวนน้ำหนัก');
+  s += `<rect class="sv-lo" x="95" y="8" width="150" height="12" rx="2"/>`;
+  s += `<circle class="sv-ma" cx="173" cy="118" r="30"/><circle class="sv-dot" cx="173" cy="118" r="6"/>`;
+  s += `<path class="sv-rope" d="M143,20 L143,118 A30,30 0 0 0 203,118 L203,34"/>`;
+  s += line(173, 118, 173, 152);
+  s += `<rect class="sv-lo" x="143" y="152" width="60" height="42" rx="3"/>`;
+  s += txt(212, 178, lab('W', v && v.W, 'N'), { a: 'start', c: 'sv-tl' });
+  s += `<circle class="sv-badge" cx="143" cy="72" r="11"/>` + `<text class="sv-tb" x="143" y="77" text-anchor="middle">1</text>`;
+  s += `<circle class="sv-badge" cx="203" cy="72" r="11"/>` + `<text class="sv-tb" x="203" y="77" text-anchor="middle">2</text>`;
+  s += arrow(226, 100, 226, 40, 'fo') + txt(236, 74, labE(v), { a: 'start', c: 'sv-tf' });
+  return s + '</svg>';
+}
+g.mPulley = function (rng) {
+  const W = rng.pick([40, 60, 80, 100, 120, 160, 200, 240]), e = W / 2, v = { W };
+  return {
+    kind: 'machine', topic: 'รอก', pre: 'E =', unit: 'นิวตัน',
+    ask: `ใช้รอกเคลื่อนที่ 1 ตัว ยกถังสีหนัก ${W} นิวตัน (ไม่คิดน้ำหนักรอกและแรงเสียดทาน)<br>ดูภาพ นับเส้นเชือกที่พยุงรอกตัวล่าง แล้วหาแรง ${I('E')} ที่ต้องดึงเชือก`,
+    eq: svgPulley(v),
+    ans: [ri(e)],
+    hints: [`ดูการ์ดความรู้ของรอก นับเส้นเชือกที่พยุงรอกตัวล่างในภาพ (เลข 1 และ 2) ได้ n = 2 แล้วใช้สูตร E = W ÷ n`,
+      `แทนค่า W = ${W} และ n = 2 ลงในสูตร แล้วหาร ${W} ด้วย 2`],
+    steps: [
+      ['ดูภาพ นับเส้นเชือกที่พยุงรอกตัวล่าง', M(`${I('n')} = 2 &nbsp;&nbsp; ${I('W')} = ${W} N`)],
+      ['เลือกสูตรของรอกเคลื่อนที่', M(`${I('E')} = ${frac(I('W'), I('n'))}`)],
+      ['แทนค่า', M(`${I('E')} = ${frac(W, 2)}`)],
+      ['คำนวณ', M(`${I('E')} = ${e}`)]
+    ],
+    verify: x => eq(mul(x, ri(2)), ri(W)),
+    lesson: LESSON.pulley
+  };
+};
+
+/* ---------- 6) คาน ---------- */
+function svgLever(v) {
+  let s = svgOpen(220, 'ภาพคานที่มีจุดหมุนและน้ำหนัก');
+  s += `<polygon class="sv-lo" points="250,132 230,172 270,172"/>`;
+  s += `<rect class="sv-ma" x="30" y="120" width="280" height="12" rx="4"/>`;
+  s += `<rect class="sv-lo" x="272" y="84" width="40" height="36" rx="3"/>`;
+  s += txt(292, 74, lab('W', v && v.W, 'N'), { c: 'sv-tl' });
+  s += arrow(48, 66, 48, 116, 'fo') + txt(60, 82, labE(v), { a: 'start', c: 'sv-tf' });
+  s += line(48, 132, 48, 190, 'sv-dash') + line(250, 172, 250, 190, 'sv-dash') + line(292, 132, 292, 190, 'sv-dash');
+  s += dim(48, 186, 250, 186) + dim(250, 186, 292, 186);
+  s += txt(149, 208, sb('d', 'e', v ? ` = ${v.de} cm` : ''));
+  s += txt(271, 208, sb('d', 'W', v ? ` = ${v.dw} cm` : ''));
+  return s + '</svg>';
+}
+g.mLever = function (rng) {
+  const dw = rng.pick([10, 20, 30]), m = rng.pick([2, 3, 4, 5]), de = m * dw, e = rng.int(2, 8) * 5;
+  const W = e * m, v = { de, dw, W };
+  const d_e = `${I('d')}<sub>e</sub>`, d_w = `${I('d')}<sub>W</sub>`;
+  return {
+    kind: 'machine', topic: 'คาน', pre: 'E =', unit: 'นิวตัน',
+    ask: `ใช้ท่อนไม้เป็นคานงัดก้อนหินหนัก ${W} นิวตัน ก้อนหินอยู่ห่างจุดหมุน ${dw} เซนติเมตร ส่วนมือที่ออกแรงกดอยู่ห่างจุดหมุน ${de} เซนติเมตร<br>จงหาแรง ${I('E')} ที่ต้องกดคาน`,
+    eq: svgLever(v),
+    ans: [ri(e)],
+    hints: [`ดูการ์ดความรู้ของคาน แล้วใช้สูตร ${I('E')} × ${d_e} = ${I('W')} × ${d_w}`,
+      `แทนค่า ${d_e} = ${de}, ${I('W')} = ${W} และ ${d_w} = ${dw} ลงในสูตร ฝั่งซ้ายคือ ${I('E')} × ${de} แล้วหารทั้งสองข้างด้วย ${de}`],
+    steps: [
+      ['ดูภาพและอ่านค่าที่โจทย์ให้', M(`${I('W')} = ${W} N &nbsp;&nbsp; ${d_e} = ${de} cm &nbsp;&nbsp; ${d_w} = ${dw} cm`)],
+      ['เลือกสูตรของคาน', M(`${I('E')} × ${d_e} = ${I('W')} × ${d_w}`)],
+      ['แทนค่า', M(`${I('E')} × ${de} = ${W} × ${dw}`)],
+      [`คำนวณ ฝั่งขวาคูณกันได้ ${W * dw} แล้วหารทั้งสองข้างด้วย ${de}`,
+        M(`${I('E')} × ${de} = ${W * dw} ⟹ ${I('E')} = ${frac(W * dw, de)} = ${e}`)]
+    ],
+    verify: x => eq(mul(x, ri(de)), ri(W * dw)),
+    lesson: LESSON.lever
+  };
+};
+
+/* ---------- การ์ดความรู้ (ภาพทั่วไป ไม่มีตัวเลข) ---------- */
+const sym = (s, d) => [s, d];
+var LESSON = {
+  screw: {
+    title: 'สกรู', svg: svgScrew(null),
+    intro: 'สกรูคือแท่งที่มีเกลียวพันรอบแกน เหมือนทางเอียงที่ม้วนเป็นเกลียว เวลาหมุนด้ามไปหนึ่งรอบ สกรูจะเคลื่อนที่ไปเพียงหนึ่งระยะพิทช์เท่านั้น มือเราหมุนไปไกลแต่สกรูเคลื่อนไปนิดเดียว จึงออกแรงน้อยก็พอ',
+    formula: M(`${I('E')} × 2π${I('r')} = ${I('W')} × ${I('P')}`),
+    symbols: [sym(I('E'), 'แรงที่เราออกเพื่อหมุนด้าม (หน่วยนิวตัน N)'), sym(I('W'), 'แรงต้านที่สกรูต้องชนะ (หน่วยนิวตัน N)'),
+      sym(I('r'), 'รัศมีที่มือหมุน คือระยะจากแกนสกรูถึงมือที่จับด้าม'), sym('2π' + I('r'), 'ระยะที่มือเคลื่อนไปครบ 1 รอบ (เส้นรอบวงที่มือหมุน)'),
+      sym(I('P'), 'พิทช์ คือระยะห่างระหว่างเกลียวสองเกลียวที่ติดกัน และเป็นระยะที่สกรูเคลื่อนไปต่อการหมุน 1 รอบ')],
+    tip: 'ด้ามยิ่งยาว และเกลียวยิ่งถี่ (P น้อย) ยิ่งออกแรงน้อย โจทย์ชุดนี้ให้ใช้ π = 22/7'
+  },
+  wedge: {
+    title: 'ลิ่ม', svg: svgWedge(null),
+    intro: 'ลิ่มคือพื้นเอียงสองอันประกบกัน ใช้ถ่างหรือผ่าวัตถุ เมื่อกดหัวลิ่มลงไป ลิ่มจะดันวัตถุให้แยกออกไปด้านข้าง ลิ่มยิ่งเรียวและยาว ยิ่งผ่อนแรงได้มาก เช่น ขวานผ่าฟืน มีด และสิ่ว',
+    formula: M(`${I('E')} × ${I('L')} = ${I('W')} × ${I('t')}`),
+    symbols: [sym(I('E'), 'แรงที่เรากดที่หัวลิ่ม (หน่วยนิวตัน N)'), sym(I('W'), 'แรงต้านของวัตถุที่ต้านไม่ให้ถูกแยก เช่น เนื้อไม้ (หน่วยนิวตัน N)'),
+      sym(I('L'), 'ความยาวด้านเอียงของลิ่ม'), sym(I('t'), 'ความหนาของหัวลิ่ม คือด้านที่เรากดหรือตี')],
+    tip: 'ลิ่มยาว (L มาก) และหัวบาง (t น้อย) ยิ่งออกแรงน้อย'
+  },
+  wheel: {
+    title: 'ล้อและเพลา', svg: svgWheel(null),
+    intro: 'ล้อและเพลาคือล้อใหญ่ที่ติดอยู่กับเพลาเล็ก หมุนไปด้วยกัน เมื่อเราออกแรงที่ขอบล้อใหญ่ เพลาจะหมุนและม้วนเชือกที่ผูกกับของ ล้อยิ่งใหญ่กว่าเพลามาก ยิ่งออกแรงน้อย เช่น กว้านตักน้ำ พวงมาลัยรถ และก๊อกน้ำแบบหมุน',
+    formula: M(`${I('E')} × ${I('R')} = ${I('W')} × ${I('r')}`),
+    symbols: [sym(I('E'), 'แรงที่เราออกที่ขอบล้อ (หน่วยนิวตัน N)'), sym(I('W'), 'น้ำหนักของสิ่งที่แขวนกับเชือกที่พันรอบเพลา (หน่วยนิวตัน N)'),
+      sym(I('R'), 'รัศมีล้อ คือระยะจากจุดศูนย์กลางถึงขอบล้อ'), sym(I('r'), 'รัศมีเพลา คือระยะจากจุดศูนย์กลางถึงผิวเพลา')],
+    tip: 'ล้อใหญ่กว่าเพลากี่เท่า (R ÷ r) ก็ออกแรงน้อยลงประมาณเท่านั้น'
+  },
+  incline: {
+    title: 'พื้นเอียง', svg: svgIncline(null),
+    intro: 'พื้นเอียงคือทางลาด แทนที่จะยกของขึ้นตรงๆ เราลากหรือดันของขึ้นไปตามทางลาด ทางลาดยิ่งยาวและยิ่งชันน้อย ยิ่งออกแรงน้อย แต่ต้องลากไปไกลขึ้น',
+    formula: M(`${I('E')} × ${I('L')} = ${I('W')} × ${I('h')}`),
+    symbols: [sym(I('E'), 'แรงที่เราลากขนานไปตามพื้นเอียง (หน่วยนิวตัน N)'), sym(I('W'), 'น้ำหนักของวัตถุ (หน่วยนิวตัน N)'),
+      sym(I('L'), 'ความยาวของพื้นเอียง วัดตามความลาด'), sym(I('h'), 'ความสูงในแนวดิ่ง คือความสูงที่ต้องยกของขึ้นไป')],
+    tip: 'โจทย์ชุดนี้ไม่คิดแรงเสียดทาน และ L วัดตามความลาดของทาง ไม่ใช่ความยาวของพื้นราบ'
+  },
+  pulley: {
+    title: 'รอก', svg: svgPulley(null),
+    intro: 'รอกเคลื่อนที่คือรอกที่ห้อยอยู่กับของและเคลื่อนที่ขึ้นลงไปพร้อมกับของ เชือกที่พยุงรอกตัวล่างช่วยกันรับน้ำหนัก แต่ละเส้นรับเท่าๆ กัน เส้นเชือกยิ่งมาก ยิ่งออกแรงดึงน้อย',
+    formula: M(`${I('E')} = ${frac(I('W'), I('n'))}`),
+    symbols: [sym(I('E'), 'แรงที่เราดึงเชือก (หน่วยนิวตัน N)'), sym(I('W'), 'น้ำหนักของสิ่งที่ยก (หน่วยนิวตัน N)'),
+      sym(I('n'), 'จำนวนเส้นเชือกที่พยุงรอกตัวล่าง ให้นับจากภาพ ในภาพนี้ n = 2 (เส้นที่ 1 และเส้นที่ 2)')],
+    tip: 'ให้นับเส้นเชือกที่ดึงรอกตัวล่างขึ้น โจทย์ชุดนี้ไม่คิดน้ำหนักของรอกและแรงเสียดทาน ส่วนรอกแบบอื่นจะเรียนต่อภายหลัง'
+  },
+  lever: {
+    title: 'คาน', svg: svgLever(null),
+    intro: 'คานคือแท่งแข็งที่หมุนรอบจุดหมุน (จุดค้ำยัน) เหมือนไม้กระดก ออกแรงที่ปลายซึ่งอยู่ไกลจากจุดหมุนมาก จะยกของที่อยู่ใกล้จุดหมุนได้ด้วยแรงน้อย เมื่อคานสมดุล แรงคูณระยะของสองข้างจะเท่ากัน',
+    formula: M(`${I('E')} × ${I('d')}<sub>e</sub> = ${I('W')} × ${I('d')}<sub>W</sub>`),
+    symbols: [sym(I('E'), 'แรงที่เราออก (หน่วยนิวตัน N)'), sym(I('W'), 'น้ำหนักของสิ่งที่ยก (หน่วยนิวตัน N)'),
+      sym(`${I('d')}<sub>e</sub>`, 'ระยะจากจุดหมุนถึงตำแหน่งที่เราออกแรง'), sym(`${I('d')}<sub>W</sub>`, 'ระยะจากจุดหมุนถึงตำแหน่งของน้ำหนัก')],
+    tip: 'วัดระยะจากจุดหมุนเสมอ ไม่ใช่วัดจากปลายคาน'
+  }
+};
+})(globalThis);
+
 /* pools.js
    จัดโจทย์รายชั้น ม.1–ม.6 และสร้างชุดโจทย์ 5 ข้อจากรหัสชุด (ชั้น-วันที่-ลำดับชุด)
    รหัสเดียวกันได้โจทย์ชุดเดิมเสมอ ไม่ว่าเปิดที่เครื่องไหน */
@@ -1058,8 +1410,24 @@ const GRADES = {
   3: { name: 'ม.3', level: 'low', blurb: 'สมการกำลังสอง เศษส่วนที่มี x ตัวส่วน' },
   4: { name: 'ม.4', level: 'high', blurb: 'เลขชี้กำลังเศษส่วน ค่าสัมบูรณ์ สูตรกำลังสอง' },
   5: { name: 'ม.5', level: 'high', blurb: 'เอกซ์โพเนนเชียล ลอการิทึม' },
-  6: { name: 'ม.6', level: 'high', blurb: 'ลอการิทึมขั้นสูง สมการติดราก' }
+  6: { name: 'ม.6', level: 'high', blurb: 'ลอการิทึมขั้นสูง สมการติดราก' },
+  7: { name: 'เครื่องกล', long: 'เครื่องกลอย่างง่าย (ฟิสิกส์)', level: 'low', total: 6,
+       blurb: 'ชุดพิเศษปูพื้นฟิสิกส์ 6 ข้อ สกรู ลิ่ม ล้อและเพลา พื้นเอียง รอก คาน มีการ์ดความรู้และภาพประกอบทุกข้อ' }
 };
+
+/* ชุดพิเศษ: เครื่องกลอย่างง่าย 6 ชนิด ข้อละ 1 ชนิด ระดับพื้นฐาน */
+const MACHINES = [['mScrew', 'screw'], ['mWedge', 'wedge'], ['mWheel', 'wheel'], ['mIncline', 'incline'], ['mPulley', 'pulley'], ['mLever', 'lever']];
+function makeMachineSet(dateStr, setNo) {
+  const code = `7-${dateStr}-${setNo}`;
+  const rng = E.makeRng(code);
+  const qs = MACHINES.map(([fn, bid]) => {
+    const q = makeQuestion(rng, { f: r => g[fn](r) });
+    if (!q) throw new Error('สร้างโจทย์ไม่สำเร็จ ' + code + ' ' + bid);
+    q.bid = bid; q.tier = 'B';
+    return q;
+  });
+  return { code, grade: 7, level: GRADES[7].level, questions: qs };
+}
 
 function makeQuestion(rng, entry) {
   for (let i = 0; i < 600; i++) {
@@ -1072,6 +1440,7 @@ function makeQuestion(rng, entry) {
 
 /* tiers: ง่าย 2, ปานกลาง 2, ท้าทาย 1 */
 function makeSet(grade, dateStr, setNo) {
+  if (grade === 7) return makeMachineSet(dateStr, setNo);
   const code = `${grade}-${dateStr}-${setNo}`;
   const rng = E.makeRng(code);
   const plan = ['E', 'E', 'M', 'M', 'H'];
@@ -1107,7 +1476,6 @@ E.makeSet = makeSet;
 const EQ = globalThis.EQ;
 const $ = s => document.querySelector(s);
 const KEY = 'eqpractice.v1';
-const TOTAL = 5;
 
 /* ---------- ที่เก็บข้อมูล ---------- */
 const DEF = () => ({ name: '', grade: 1, current: null, last: null, history: [] });
@@ -1129,7 +1497,7 @@ const thShort = d => `${d.getDate()} ${MONTHS[d.getMonth()]} ${String(d.getFullY
 const hm = d => `${pad(d.getHours())}:${pad(d.getMinutes())} น.`;
 const dur = ms => { const s = Math.max(0, Math.round(ms / 1000)), m = Math.floor(s / 60); return m ? `${m} นาที ${s % 60} วินาที` : `${s} วินาที`; };
 const esc = s => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-const parseCode = code => { const m = /^([1-6])-(\d{8})-(\d{1,3})$/.exec(code || ''); return m ? { grade: +m[1], date: m[2], no: +m[3] } : null; };
+const parseCode = code => { const m = /^([1-7])-(\d{8})-(\d{1,3})$/.exec(code || ''); return m ? { grade: +m[1], date: m[2], no: +m[3] } : null; };
 const dateOfCode = p => new Date(+p.date.slice(0, 4), +p.date.slice(4, 6) - 1, +p.date.slice(6, 8));
 
 /* ---------- สถานะชั่วคราว ---------- */
@@ -1177,7 +1545,7 @@ function toast(msg) {
 function startSet(code) {
   const p = parseCode(code);
   try { setCache = EQ.makeSet(p.grade, p.date, p.no); } catch (e) { S.error = 'สร้างชุดโจทย์ไม่สำเร็จ ลองกดอีกครั้ง'; render(); return; }
-  DB.current = { code, grade: p.grade, startedAt: Date.now(), activeMs: 0, qi: 0, inputs: {}, res: {}, open: {} };
+  DB.current = { code, grade: p.grade, startedAt: Date.now(), activeMs: 0, qi: 0, total: setCache.questions.length, inputs: {}, res: {}, open: {} };
   DB.grade = p.grade;
   S.fb = {}; S.view = 'quiz'; S.error = '';
   tickStart = Date.now();
@@ -1210,7 +1578,7 @@ function homeHTML() {
     const done = Object.keys(c.res).length, p = parseCode(c.code);
     main = `<section class="panel resume">
       <p class="eyebrow">มีชุดที่ทำค้างอยู่</p>
-      <p class="rtitle">${G[c.grade].name} · ตอบแล้ว ${done} จาก ${TOTAL} ข้อ</p>
+      <p class="rtitle">${G[c.grade].name} · ตอบแล้ว ${done} จาก ${c.total || 5} ข้อ</p>
       <p class="small">ชุดของ${thLong(dateOfCode(p))} · เริ่มเมื่อ ${hm(new Date(c.startedAt))}</p>
       <button class="btn primary big" data-act="resume">ทำต่อจากข้อ ${c.qi + 1}</button>
       ${S.confirmDiscard
@@ -1220,13 +1588,15 @@ function homeHTML() {
     </section>`;
   } else {
     const n = nextNo(DB.grade);
-    const grid = g => `<button type="button" class="gbtn" data-act="grade" data-v="${g}" aria-pressed="${DB.grade === g}">${G[g].name}</button>`;
+    const grid = g => `<button type="button" class="gbtn" data-act="grade" data-v="${g}" aria-pressed="${DB.grade === g}">${G[g].long || G[g].name}</button>`;
     main = `<section class="panel">
       <div class="group"><label class="label" for="name">ชื่อเล่น</label>
         <input class="text" id="name" type="text" autocomplete="off" maxlength="30" placeholder="พิมพ์ชื่อเล่นของหนู" value="${esc(DB.name)}"></div>
       <div class="group"><h2>มัธยมต้น</h2><div class="grades">${[1, 2, 3].map(grid).join('')}</div></div>
       <div class="group"><h2>มัธยมปลาย</h2><div class="grades">${[4, 5, 6].map(grid).join('')}</div></div>
+      <div class="group"><h2>ชุดพิเศษ</h2><div class="grades one">${grid(7)}</div></div>
       <p class="blurb">${G[DB.grade].name}: ${G[DB.grade].blurb}</p>
+      ${DB.grade === 7 ? '<p class="blurb">ชุดนี้ไม่ใช่เนื้อหาของชั้นใดชั้นหนึ่ง ใช้ปูพื้นให้คุ้นกับสูตรและภาพของเครื่องกล ทุกข้อมีการ์ดความรู้ให้อ่านก่อนทำ</p>' : ''}
       <button class="btn primary big" data-act="start">${n === 1 ? `เริ่มทำชุดวันนี้ ${G[DB.grade].name}` : `ทำชุดเพิ่ม · ชุดที่ ${n} ของวันนี้`}</button>
       ${S.error ? `<p class="warn">${esc(S.error)}</p>` : ''}
     </section>`;
@@ -1252,6 +1622,25 @@ function quizHTML() {
   const G = EQ.GRADES, N = set.questions.length, open = c.open[i] || {}, res = c.res[i];
   const doneAll = Object.keys(c.res).length === N;
   const multi = q.ans.length > 1;
+  const hs = q.hints || [q.hint];
+  const hl = typeof open.hint === 'number' ? open.hint : (open.hint ? 1 : 0);
+  const board = q.kind === 'machine'
+    ? `<div class="board fig">${q.eq}</div>`
+    : `<div class="board"><div class="eq">${q.eq}</div></div>`;
+  let lessonHTML = '';
+  if (q.lesson) {
+    const Ls = q.lesson, lopen = open.learn !== false;
+    lessonHTML = `<section class="card lesson">
+      <div class="meta"><span class="no">การ์ดความรู้ · ${Ls.title}</span>
+        <button class="btn sm" data-act="learn" aria-expanded="${lopen}">${lopen ? 'ซ่อน' : 'เปิดดูอีกครั้ง'}</button></div>
+      ${lopen ? `<div class="board fig">${Ls.svg}</div>
+        <p class="intro">${Ls.intro}</p>
+        <div class="board fm">${Ls.formula}</div>
+        <dl class="syms">${Ls.symbols.map(s => `<div><dt class="m">${s[0]}</dt><dd>${s[1]}</dd></div>`).join('')}</dl>
+        <div class="box"><p>${Ls.tip}</p></div>
+        <button class="btn primary big" data-act="learn-done">เข้าใจแล้ว ไปทำโจทย์</button>` : ''}
+    </section>`;
+  }
   const dots = set.questions.map((_, k) => {
     const r = c.res[k];
     return `<button type="button" class="dot ${r ? (r.ok ? 'ok' : 'miss') : ''}" data-act="go" data-v="${k}" aria-label="ข้อ ${k + 1}" ${k === i ? 'aria-current="true"' : ''}>${k + 1}</button>`;
@@ -1264,20 +1653,21 @@ function quizHTML() {
   ).join('') + '<button type="button" class="key fn" data-act="clear" aria-label="ล้างคำตอบ">ล้าง</button>';
   const solution = open.sol && res
     ? `<ol class="steps">${q.steps.map(s => `<li><p>${s[0]}</p>${s[1] || ''}</li>`).join('')}</ol>
-       <p class="final">คำตอบ <span class="m">${q.pre} ${EQ.ansHtml(q)}</span></p>` : '';
+       <p class="final">คำตอบ <span class="m">${q.pre} ${EQ.ansHtml(q)}</span>${q.unit ? ' ' + q.unit : ''}</p>` : '';
   return `<div class="topbar">
       <button class="btn quiet" data-act="home">‹ หน้าแรก</button>
       <div class="mid">${G[c.grade].name} · ข้อ ${i + 1} จาก ${N}</div>
       <button class="btn" data-act="save">บันทึก</button>
     </div>
     <div class="dots" role="group" aria-label="เลือกข้อ">${dots}</div>
-    <section class="card">
+    ${lessonHTML}
+    <section class="card" id="prob">
       <div class="meta"><span class="no">ข้อ ${i + 1} <small>/ ${N}</small></span><span class="topic">${q.topic}</span></div>
       <p class="ask">${q.ask}</p>
-      <div class="board"><div class="eq">${q.eq}</div></div>
+      ${board}
       <form id="form" autocomplete="off">
         <div class="field"><label for="ans">${q.pre}</label>
-          <input id="ans" type="text" ${S.sysKb ? '' : 'inputmode="none"'} autocapitalize="off" spellcheck="false" enterkeyhint="done" value="${esc(c.inputs[i] || '')}"></div>
+          <input id="ans" type="text" ${S.sysKb ? '' : 'inputmode="none"'} autocapitalize="off" spellcheck="false" enterkeyhint="done" value="${esc(c.inputs[i] || '')}">${q.unit ? `<span class="unit">${q.unit}</span>` : ''}</div>
       </form>
       <div class="pad">${keys}</div>
       <p class="note">พิมพ์เศษส่วนด้วย / เช่น 3/4${multi ? ` · ข้อนี้มี ${q.ans.length} คำตอบ คั่นด้วยเครื่องหมาย ,` : ''}
@@ -1285,10 +1675,10 @@ function quizHTML() {
       <button type="submit" form="form" class="btn primary big">ตรวจคำตอบ</button>
       <div class="fb ${fb ? fb.t : ''}" role="status">${fb ? esc(fb.m) : ''}</div>
       <div class="row">
-        <button class="btn" data-act="hint" aria-expanded="${!!open.hint}">คำใบ้</button>
+        <button class="btn" data-act="hint" aria-expanded="${hl > 0}">${hl === 0 ? 'คำใบ้' : hl < hs.length ? 'คำใบ้เพิ่ม' : 'ซ่อนคำใบ้'}</button>
         <button class="btn" data-act="sol" aria-expanded="${!!open.sol}" ${res ? '' : 'disabled'}>${res ? 'ดูวิธีทำ' : 'วิธีทำ (ดูได้หลังตรวจ)'}</button>
       </div>
-      ${open.hint ? `<div class="box"><p>${q.hint}</p></div>` : ''}
+      ${hs.slice(0, hl).map(h => `<div class="box"><p>${h}</p></div>`).join('')}
       ${solution}
     </section>
     <div class="savebar"><span class="small" id="savedat">${storageOK ? (S.savedAt ? 'บันทึกล่าสุด ' + hm(S.savedAt) : 'บันทึกอัตโนมัติทุกครั้งที่ตอบ') : 'เบราว์เซอร์นี้เก็บข้อมูลไม่ได้'}</span></div>
@@ -1318,7 +1708,7 @@ function resultHTML() {
   return `<div class="sheet" id="sheet">
       <div class="sheet-head"><span>ใบคะแนน · ห้องฝึกสมการ</span><span>${thShort(fi)}</span></div>
       <div class="sheet-body">
-        <div class="who"><div class="grade-badge">${G[L.grade].name}</div>
+        <div class="who"><div class="grade-badge${L.grade === 7 ? ' long' : ''}">${G[L.grade].name}</div>
           <input class="name-input" id="rname" type="text" maxlength="30" placeholder="พิมพ์ชื่อเล่นตรงนี้" aria-label="ชื่อเล่น" value="${esc(L.name || '')}"></div>
         <div class="score-row"><div class="score-big">${L.score}<small> / ${L.total}</small></div><span>คะแนน</span></div>
         <div class="marks">${marks}</div>
@@ -1391,7 +1781,7 @@ document.addEventListener('click', e => {
     case 'home': if (c) { save(false); tickStart = null; } S.view = 'home'; S.error = ''; render(); break;
     case 'save': save(true); break;
     case 'go': c.qi = +v; save(false); render(); break;
-    case 'step': c.qi = Math.max(0, Math.min(TOTAL - 1, c.qi + +v)); save(false); render(); break;
+    case 'step': c.qi = Math.max(0, Math.min(getSet(c).questions.length - 1, c.qi + +v)); save(false); render(); break;
     case 'key': {
       const inp = $('#ans'); if (!inp) break;
       const a = inp.selectionStart == null ? inp.value.length : inp.selectionStart, z = inp.selectionEnd == null ? a : inp.selectionEnd;
@@ -1402,7 +1792,17 @@ document.addEventListener('click', e => {
     }
     case 'clear': { const inp = $('#ans'); if (inp) { inp.value = ''; c.inputs[c.qi] = ''; inp.focus({ preventScroll: true }); saveSoon(); } break; }
     case 'syskb': S.sysKb = !S.sysKb; render(); break;
-    case 'hint': { const o = c.open[c.qi] = c.open[c.qi] || {}; o.hint = !o.hint; save(false); render(); break; }
+    case 'hint': {
+      const o = c.open[c.qi] = c.open[c.qi] || {}, qq = getSet(c).questions[c.qi], n = (qq.hints || [qq.hint]).length;
+      const cur = typeof o.hint === 'number' ? o.hint : (o.hint ? 1 : 0);
+      o.hint = cur >= n ? 0 : cur + 1; save(false); render(); break;
+    }
+    case 'learn': { const o = c.open[c.qi] = c.open[c.qi] || {}; o.learn = o.learn === false; save(false); render(); break; }
+    case 'learn-done': {
+      const o = c.open[c.qi] = c.open[c.qi] || {}; o.learn = false; save(false); render();
+      const t = $('#prob'); if (t && t.scrollIntoView) t.scrollIntoView({ block: 'start' });
+      break;
+    }
     case 'sol': { const o = c.open[c.qi] = c.open[c.qi] || {}; o.sol = !o.sol; save(false); render(); break; }
     case 'finish': finish(); break;
     case 'review': S.reviewOpen = !S.reviewOpen; render(); break;
